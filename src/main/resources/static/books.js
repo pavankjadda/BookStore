@@ -6,9 +6,11 @@ app.controller('books_controller', function($scope,$http)
         $http({
             method : "GET",
             url : "/books"
-        }).then(function mySuccess(response) {
-            $scope.myWelcome = response.data;
-        }, function myError(response) {
+        }).then(function mySuccess(response)
+        {
+            $scope.books_data = response.data;
+        }, function myError(response)
+        {
             $scope.myWelcome = response.statusText;
         });
     }

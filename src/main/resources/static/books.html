@@ -34,37 +34,24 @@
             <tr>
                 <th>ID</th>
                 <th>Title</th>
-                <th>Parent ID</th>
+                <th>Number of Pages</th>
+                <th>Cost</th>
+                <th>Author</th>
                 <th class="text-center">Action</th>
             </tr>
             </thead>
-            <tr>
-                <td>1</td>
-                <td>News</td>
-                <td>News Cate</td>
+            <tr  ng-repeat="book in books_data | filter:q as results track by book.id">
+                <td>{{book.id}}</td>
+                <td>{{book.title}}</td>
+                <td>{{book.numberOfPages}}</td>
+                <td>{{book.cost}}</td>
+                <td>{{book.author}}</td>
                 <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span
                         class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#"
                                                                              class="btn btn-danger btn-xs"><span
                         class="glyphicon glyphicon-remove"></span> Del</a></td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>Products</td>
-                <td>Main Products</td>
-                <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span
-                        class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#"
-                                                                             class="btn btn-danger btn-xs"><span
-                        class="glyphicon glyphicon-remove"></span> Del</a></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Blogs</td>
-                <td>Parent Blogs</td>
-                <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span
-                        class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#"
-                                                                             class="btn btn-danger btn-xs"><span
-                        class="glyphicon glyphicon-remove"></span> Del</a></td>
-            </tr>
+
         </table>
     </div>
 </div>

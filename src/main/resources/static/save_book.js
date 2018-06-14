@@ -1,5 +1,5 @@
 var app = angular.module('save_book', ["ngRoute"]);
-app.controller('save_book_controller', function($scope,$http)
+app.controller('save_book_controller', function($scope,$http,$location)
 {
     $scope.validate_and_save_book=function ()
     {
@@ -11,21 +11,14 @@ app.controller('save_book_controller', function($scope,$http)
     }).then(function mySuccess(response)
         {
             $scope.myWelcome = response.data;
+            //window.location='http://localhost:8081/books.html';
+            window.alert("Book saved with Id: "+response.data.id);
+            $scope.reset();
         }, function myError(response)
         {
             $scope.myWelcome = response.statusText;
         });
     };
-
-    /*$http({
-        method : "GET",
-        url : "/books"
-    }).then(function mySuccess(response) {
-        $scope.myWelcome = response.data;
-    }, function myError(response) {
-        $scope.myWelcome = response.statusText;
-    });*/
-
 
 });
 
