@@ -2,6 +2,7 @@ package com.books;
 
 import com.books.model.Book;
 import com.books.repo.BookRepository;
+import com.books.service.BookService;
 import com.books.util.JsonUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,8 +31,11 @@ public class BookControllerIntegrationTest
     @Autowired
     MockMvc mockMvc;
 
+    /*@Autowired
+    BookRepository bookRepository;*/
+
     @Autowired
-    BookRepository bookRepository;
+    BookService bookService;
 
     @Test
     public void createPersons_And_GetPersonsTest() throws Exception
@@ -43,14 +47,13 @@ public class BookControllerIntegrationTest
     @Test
     public void whenValidInput_createPerson() throws Exception
     {
-        Book book=createBook("Spring Essentials",200,12.23,"Craig");
+        Book book=createBook("Java Edition 9",200,12.23,"Craig");
         mockMvc.perform(post("/books/save_book").contentType(MediaType.APPLICATION_JSON).content(JsonUtil.toJson(book)));
-        List<Book> retrievedBooks = bookRepository.findAll();
+        List<Book> retrievedBooks = bookService.findAll();
         for(Book retrievedBook : retrievedBooks)
         {
-            if(retrievedBook.getTitle().equals("Spring Essentials"))
+            if(retrievedBook.getTitle().equals("Java Edition 9"))
                 System.out.println("Success");
-
         }
         //assertThat(retrivedBooks).extracting(Book::getTitle).isEqualTo("Spring Essentials");
     }
@@ -58,7 +61,7 @@ public class BookControllerIntegrationTest
     private Book createBook(String title, Integer numberOfPages, Double cost, String author)
     {
         Book book=new Book(title,numberOfPages,cost,author);
-        bookRepository.saveAndFlush(book);
+        bookService.saveAndFlush(book);
         return book;
     }
 }
