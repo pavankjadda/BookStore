@@ -22,12 +22,12 @@ app.config(function($routeProvider)
 {
     $routeProvider
         .when("/", {
-            templateUrl : "index.html"
+            templateUrl : "../index.html"
         })
         .when("/save_book", {
-            templateUrl : "save_book.html"
+            templateUrl : "../save_book.html"
         })
         .when("/books", {
-            templateUrl : "books.html"
+            templateUrl : "../books.html"
         });
 });

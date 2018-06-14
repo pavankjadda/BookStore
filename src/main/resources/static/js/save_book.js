@@ -10,28 +10,31 @@ app.controller('save_book_controller', function($scope,$http,$location)
 
     }).then(function mySuccess(response)
         {
-            $scope.myWelcome = response.data;
-            //window.location='http://localhost:8081/books.html';
-            window.alert("Book saved with Id: "+response.data.id);
-            $scope.reset();
+            $scope.form_error=false;
+            $scope.form_success=true;
+            $scope.book_id=response.data.id;
+            //window.alert("Book saved with Id: "+response.data.id);
+            //save_book_form.$pristine = true;
+
         }, function myError(response)
         {
-            $scope.myWelcome = response.statusText;
+            //window.alert("Unable to save, please check Book information");
+            $scope.form_error=true;
+            $scope.form_success=false;
         });
     };
-
 });
 
 app.config(function($routeProvider)
 {
     $routeProvider
         .when("/", {
-            templateUrl : "index.html"
+            templateUrl : "../index.html"
         })
         .when("/save_book", {
-            templateUrl : "save_book.html"
+            templateUrl : "../save_book.html"
         })
         .when("/books", {
-            templateUrl : "books.html"
+            templateUrl : "../books.html"
         });
 });
