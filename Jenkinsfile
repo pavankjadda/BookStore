@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh '/Applications/Docker.app/Contents/Resources/bin/docker ps'
+                sh '/usr/local/bin/docker ps'
                 sh 'mvn -B -DskipTests clean package'
             }
         }
