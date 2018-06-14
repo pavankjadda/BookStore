@@ -23,4 +23,15 @@ public class Book
 
     private String author;
 
+    public Book()
+    {
+    }
+
+    public Book(String title, Integer numberOfPages, Double cost, String author)
+    {
+        this.title = title;
+        this.numberOfPages = numberOfPages;
+        this.cost = cost;
+        this.author = author;
+    }
 }
