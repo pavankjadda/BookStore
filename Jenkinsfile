@@ -3,6 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                sh 'whoami'
                 sh '/usr/local/bin/docker ps'
                 sh 'mvn -B -DskipTests clean package'
             }
