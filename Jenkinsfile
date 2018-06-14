@@ -5,12 +5,12 @@ pipeline {
             steps {
                 sh 'whoami'
                 //sh '/usr/local/bin/docker ps'
-                sh '/usr/local/bin/mvn -B -DskipTests clean package'
+                sh 'mvn -B -DskipTests clean package'
             }
         }
         stage('Test') {
             steps {
-                sh '/usr/local/bin/mvn test'
+                sh 'mvn test'
             }
             post {
                 always {
