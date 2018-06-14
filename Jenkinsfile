@@ -1,13 +1,8 @@
 pipeline {
      agent {
         docker {
-<<<<<<< HEAD
             image 'maven:3-alpine'
             args '-v /root/.m2:/root/.m2'
-=======
-            image 'maven:3-alpine' 
-            args '-v /root/.m2:/root/.m2' 
->>>>>>> 62c37c16c040a9ad03809dbd097c09ec6be273e6
         }
     }
     stages {
