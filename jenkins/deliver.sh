@@ -28,6 +28,9 @@ set -x
 //nohup java -jar target/${NAME}-${VERSION}.jar &
 //java -jar target/${NAME}-${VERSION}.jar
 
+echo 'Install docker'
+brew install docker
+ 
 echo 'Building docker image of the Application'
 docker build -f Dockerfile -t duppoc/${NAME}:${VERSION} .
 
