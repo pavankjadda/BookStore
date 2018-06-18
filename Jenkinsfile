@@ -55,10 +55,9 @@ pipeline
             }
         }
 
-        stage('Deliver') {
-        when {
-              branch 'production'
-           }
+        stage('Deliver') 
+          {
+   
             steps {
                 sh 'bash ./jenkins/deliver.sh'
             }
