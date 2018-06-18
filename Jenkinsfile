@@ -1,21 +1,34 @@
 pipeline {
      agent any
      /*
-     {
+     agent {
         docker {
             image 'maven:3-alpine'
             //This exposes application through port 8081 to outside world
             args '-p 8081:8081'
         }
     } */
-    stages {
-        stage('Build') {
-            steps {
-                 sh 'ifconfig'
+    stages 
+     {
+        stage('Build') 
+         {
+             agent 
+              {
+                    docker 
+                   {
+                         image 'maven:3-alpine'
+                         //This exposes application through port 8081 to outside world
+                         args '-p 8081:8081'
+                   }
+               }
+              steps 
+              {
                 sh 'mvn -B -DskipTests clean package'
-            }
-        }
-        stage('Test') {
+              }
+          }
+
+        stage('Test') 
+        {
             steps {
                 //sh 'mvn test'
                 sh 'echo "test"'
