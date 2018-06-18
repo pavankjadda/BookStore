@@ -1,6 +1,6 @@
 pipeline {
      agent {
-         "/usr/local/bin/docker"{
+         docker{
             image 'maven:3-alpine'
             //This exposes application through port 8081 to outside world
             args '-p 8081:8081'
