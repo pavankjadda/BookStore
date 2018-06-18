@@ -36,7 +36,7 @@ echo 'Install docker'
 brew install docker
  
 echo 'Building docker image of the Application'
-docker build -f Dockerfile -t duppoc/${NAME}:${VERSION} .
+docker build -f Dockerfile -t duppoc/bookstore:latest .
 
 echo 'Login into Dockerhub'
 docker login -u duppoc -p Bcmc@2018
