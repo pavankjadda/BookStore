@@ -1,7 +1,6 @@
 pipeline {
      agent {
         docker {
-             sh 'ifconfig'
             image 'maven:3-alpine'
             //This exposes application through port 8081 to outside world
             args '-p 8081:8081'     //args '-v /root/.m2:/root/.m2 -p 8081:8081'
