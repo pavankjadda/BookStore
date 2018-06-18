@@ -24,6 +24,18 @@ set +x
 echo 'The following command runs and outputs the execution of your Java'
 echo 'application (which Jenkins built using Maven) to the Jenkins UI.'
 set -x
-ifconfig
-nohup java -jar target/${NAME}-${VERSION}.jar &
+//ifconfig
+//nohup java -jar target/${NAME}-${VERSION}.jar &
 //java -jar target/${NAME}-${VERSION}.jar
+
+echo 'Building docker image of the Application'
+docker build -f Dockerfile -t duppoc/${NAME}:${VERSION} .
+
+echo 'Login into Dockerhub'
+docker login -u duppoc -p Bcmc@2018
+
+echo 'Pushing to docker hub'
+docker push duppoc/bookstore:latest
+
+echo 'Get docker image'
+docker run duppoc/bookstore
