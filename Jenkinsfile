@@ -52,7 +52,7 @@ pipeline {
 
         stage('Deliver') {
         when {
-              branch 'master'
+              branch 'production'
            }
             steps {
                 sh 'bash ./jenkins/deliver.sh'
