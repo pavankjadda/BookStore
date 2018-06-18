@@ -45,4 +45,4 @@ echo 'Pushing to docker hub'
 docker push duppoc/bookstore:latest
 
 echo 'Get docker image'
-docker run duppoc/bookstore -p 8081:8081
+docker run  -p 8081:8081 duppoc/bookstore
