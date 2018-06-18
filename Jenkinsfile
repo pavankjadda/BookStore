@@ -28,8 +28,8 @@ pipeline
             post {
                 always {
                     //junit 'target/surefire-reports/*.xml'
-                    sh 'whoami'
-                     sh 'cat /etc/cpuinfo'
+                    sh 'uname -a'
+                     sh 'apk add docker'
                 }
             }
         }
