@@ -15,7 +15,7 @@ pipeline
          {
               steps 
               {
-                sh 'mvn -B -DskipTests clean package'
+                //sh 'mvn -B -DskipTests clean package'
               }
           }
 
@@ -30,6 +30,7 @@ pipeline
                     //junit 'target/surefire-reports/*.xml'
                     sh 'uname -a'
                      sh 'apk add docker'
+                     sh 'service docker start'
                 }
             }
         }
