@@ -23,12 +23,13 @@ pipeline
         {
             steps {
                 //sh 'mvn test'
-                sh 'echo "test"'
+                sh 'ifconfig'
             }
             post {
                 always {
                     //junit 'target/surefire-reports/*.xml'
-                    sh 'echo "test"'
+                    sh 'whoami'
+                     sh 'cat /etc/cpuinfo'
                 }
             }
         }
