@@ -11,6 +11,7 @@ pipeline
         }      
             stages
             {
+                  /*
                  stage('Initialize')
                   {
                         steps 
@@ -19,7 +20,7 @@ pipeline
                             def mavenHome  = tool 'MyMaven'
                             env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
                           }
-                  }
+                  } */
 
                   stage('Build') 
                  {
@@ -27,44 +28,47 @@ pipeline
 
                     steps 
                     {
-                      //sh 'mvn -B -DskipTests clean package'
-                         sh 'uname -a'
-                         sh 'mvn --version'
+                      sh 'mvn -B -DskipTests clean package'
+                         //sh 'mvn --version'
                          //sh 'sudo dseditgroup -o edit -a jenkins -t user docker'
-                         sh 'sudo docker ps'
+                         //sh 'sudo docker ps'
                     }
                 }
               stage('Test') 
               {
-                  steps {
+                  steps 
+                    {
                       //sh 'mvn test'
                       sh 'ifconfig'
                   }
-                  post {
-                      always {
-                          //junit 'target/surefire-reports/*.xml'
+                  post 
+                    {
+                      always 
+                       {
                           sh 'uname -a'
-                           //sh 'apk add docker'
-                           //sh 'service docker start'
                       }
                   }
               }
               stage('Deliver for development')
               {
-                          when {
+                          when 
+                          {
                               branch 'development'
                           }
-                          steps {
+                          steps 
+                          {
                               sh './jenkins/scripts/deliver-for-development.sh'
                               input message: 'Finished using the web site? (Click "Proceed" to continue)'
                           }
               }
               stage('Deploy for production')
               {
-                  when {
+                  when 
+                    {
                       branch 'production'
                   }
-                  steps {
+                  steps 
+                   {
                       sh './jenkins/scripts/deploy-for-production.sh'
                       input message: 'Finished using the web site? (Click "Proceed" to continue)'
                   }
