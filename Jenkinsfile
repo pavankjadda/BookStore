@@ -153,7 +153,11 @@ node {
              sh 'bash ./jenkins/deliver.sh'
          }
      }
-   def deployForProduction()
+   
+ }//End of Node
+} //End of pipleline
+
+def deployForProduction()
 {
     when {
              branch 'production'
@@ -164,11 +168,6 @@ node {
              input message: 'Finished using the web site? (Click "Proceed" to continue)'
          }
 }   
-}
-
-
-
- }
 
 
 
