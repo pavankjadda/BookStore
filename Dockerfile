@@ -7,8 +7,7 @@ COPY target/bookstore-0.0.1-SNAPSHOT.jar /bookstore.jar
 # specify default command
 CMD ["/usr/bin/java", "-jar", "/bookstore.jar"]
 
-RUN apk add maven
-
+RUN apk update
 RUN apk add docker
 
 EXPOSE 8081:8081
