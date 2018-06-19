@@ -29,7 +29,7 @@ pipeline
               {
                 //sh 'mvn -B -DskipTests clean package'
                 sh 'uname -a'
-                   sh 'mvn'
+                   sh 'mvn --version'
                    sh 'docker ps'
               }
           }
