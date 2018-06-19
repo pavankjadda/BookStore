@@ -14,16 +14,15 @@ pipeline
      {
          stage('Build') 
          {
-               /*
+               
                agent 
                  { 
                      docker
                       {
                         image 'maven:3-alpine'
-                        //This exposes application through port 8081 to outside world
                         args '-v /root/.m2:/root/.m2'
                      }  
-                 } */
+                 } 
 
               steps 
               {
@@ -31,7 +30,7 @@ pipeline
                    sh 'uname -a'
                    sh 'mvn --version'
                    //sh 'sudo dseditgroup -o edit -a jenkins -t user docker'
-                   sh 'sudo docker run -u root  maven'
+                   sh 'sudo docker ps'
               }
           }
 
