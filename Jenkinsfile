@@ -66,9 +66,9 @@ pipeline
                 sh 'bash ./jenkins/deliver.sh'
             }
         }
-    }
+    } //End of stages
 
-}
+} //End of pipeline
 
 
 
@@ -101,7 +101,7 @@ pipeline
       }
             stages
             {
-                  /*
+                 
                  stage('Initialize')
                   {
                         steps 
@@ -110,7 +110,7 @@ pipeline
                             def mavenHome  = tool 'MyMaven'
                             env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
                           }
-                  } */
+                  } 
 
                   stage('Build') 
                  {
