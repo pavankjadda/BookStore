@@ -9,8 +9,8 @@ pipeline
                {
                     steps 
                         {
-                          def dockerHome = tool 'MyDocker'
-                          def mavenHome  = tool 'MyMaven'
+                         def dockerHome = '${params.MyDocker}'
+                          def mavenHome  = '${params.MyMaven}'
                           //env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
                         }
 
