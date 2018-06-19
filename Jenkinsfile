@@ -31,7 +31,7 @@ pipeline
                    sh 'uname -a'
                    sh 'mvn --version'
                    //sh 'sudo dseditgroup -o edit -a jenkins -t user docker'
-                   sh 'sudo docker run -u root -v /root/.m2:/root/.m2 maven:3-alpine'
+                   sh 'sudo docker run -u root  maven:3-alpine'
               }
           }
 
