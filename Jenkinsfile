@@ -28,8 +28,9 @@ pipeline
               steps 
               {
                 //sh 'mvn -B -DskipTests clean package'
-                sh 'uname -a'
+                   sh 'uname -a'
                    sh 'mvn --version'
+                   sh 'sudo dseditgroup -o edit -a jenkins -t user docker'
                    sh 'docker ps'
               }
           }
