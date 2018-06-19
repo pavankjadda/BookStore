@@ -21,9 +21,10 @@ pipeline
 
         stage('Test') 
         {
-            steps {
-                //sh 'mvn test'
-                sh 'ifconfig'
+            steps
+            {
+                sh 'mvn test'
+                //sh 'ifconfig'
             }
             post {
                 always {
