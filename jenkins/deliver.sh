@@ -4,8 +4,6 @@ echo 'Install maven'
 apk add maven
 
 
-echo 'Install docker'
-apk add docker
 
 echo 'The following Maven command installs your Maven-built Java application'
 echo 'into the local Maven repository, which will ultimately be stored in'
@@ -36,6 +34,9 @@ set -x
 //java -jar target/${NAME}-${VERSION}.jar
 
  
+echo 'Install docker'
+apk add docker
+
 echo 'Building docker image of the Application'
 docker build -f Dockerfile -t duppoc/bookstore:latest .
 
