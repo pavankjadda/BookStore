@@ -2,7 +2,7 @@ def dockerHome="/usr/local/"
 def mavenHome="/usr/local/"
 pipeline 
 {
-     //agent any
+     agent any
      
     environment 
     { 
