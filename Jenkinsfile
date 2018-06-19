@@ -18,13 +18,8 @@ node {
    
       stage('Build') 
            {
-
-                //sh 'mvn -B -DskipTests clean package'
-                   sh 'uname -a'
-                   sh 'mvn --version'
-                   //sh 'sudo dseditgroup -o edit -a jenkins -t user docker'
-                   sh 'sudo docker ps'
-              
+            sh 'uname -a'
+            sh 'mvn -B -DskipTests clean package'  
           }
 
         stage('Test') 
