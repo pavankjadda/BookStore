@@ -1,4 +1,5 @@
 
+/*
 pipeline 
 { 
  agent any 
@@ -79,11 +80,13 @@ pipeline
              }
            } //End of stages
 }
-
+*/
 
 
 /* *******************************************************************************************************        */
-/*
+
+pipeline
+{
 node {
 
     stage('Initialize')
@@ -153,6 +156,7 @@ node {
       
 }
 
+
 def deployForProduction()
 {
     when {
@@ -164,6 +168,7 @@ def deployForProduction()
              input message: 'Finished using the web site? (Click "Proceed" to continue)'
          }
 }
+ }
 */
 
 
