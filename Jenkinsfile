@@ -11,6 +11,13 @@ pipeline
             args '-u root -p 8081:8081 -v /var/run/docker.sock:/var/run/docker.sock  -v jenkins-data:/var/jenkins_home '
          }
     } */
+     
+     stage('Initialize')
+     {
+          def dockerHome = tool 'MyDocker'
+          def mavenHome  = tool 'MyMaven'
+          env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+     }
     stages 
      {
         stage('Build') 
