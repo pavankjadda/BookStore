@@ -1,4 +1,90 @@
 
+pipeline 
+{ 
+ agent any
+ tools 
+  { 
+  jdk "${params.JDK_TOOL}"
+ } 
+  
+    stages 
+          {
+               stage('Initialize')
+               {
+                    steps 
+                        {
+                          sh 'jdk --version'
+                          def dockerHome = tool 'MyDocker'
+                          def mavenHome  = tool 'MyMaven'
+                          env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+                        }
+
+               }
+
+              stage('Build') 
+              {
+                   steps 
+                   {
+                     //sh 'mvn -B -DskipTests clean package'
+                     sh 'uname -a'
+                        sh 'mvn'
+                        sh 'docker ps'
+                   }
+               }
+
+             stage('Test') 
+             {
+                 steps {
+                     //sh 'mvn test'
+                     sh 'ifconfig'
+                 }
+                 post {
+                     always {
+                         //junit 'target/surefire-reports/*.xml'
+                         sh 'uname -a'
+                          //sh 'apk add docker'
+                          //sh 'service docker start'
+                     }
+                 }
+             }
+
+             stage('Deliver for development')
+             {
+                         when {
+                             branch 'development'
+                         }
+                         steps {
+                             sh './jenkins/scripts/deliver-for-development.sh'
+                             input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                         }
+             }
+
+             stage('Deploy for production')
+             {
+                 when {
+                     branch 'production'
+                 }
+                 steps {
+                     sh './jenkins/scripts/deploy-for-production.sh'
+                     input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                 }
+             }
+
+             stage('Deliver') 
+               {
+
+                 steps 
+                 {
+                     sh 'bash ./jenkins/deliver.sh'
+                 }
+             }
+           } //End of stages
+}
+
+
+
+/* *******************************************************************************************************        */
+/*
 node {
 
     stage('Initialize')
@@ -79,10 +165,10 @@ def deployForProduction()
              input message: 'Finished using the web site? (Click "Proceed" to continue)'
          }
 }
+*/
 
 
-
-
+/* *******************************************************************************************************        */
 
 /*
 
