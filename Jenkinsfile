@@ -153,11 +153,7 @@ node {
              sh 'bash ./jenkins/deliver.sh'
          }
      }
-      
-}
-
-
-def deployForProduction()
+   def deployForProduction()
 {
     when {
              branch 'production'
@@ -167,7 +163,11 @@ def deployForProduction()
              sh './jenkins/scripts/deploy-for-production.sh'
              input message: 'Finished using the web site? (Click "Proceed" to continue)'
          }
+}   
 }
+
+
+
  }
 
 
