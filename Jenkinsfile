@@ -2,6 +2,10 @@ def dockerHome="/usr/local/"
 def mavenHome="/usr/local/"
 pipeline 
 {
+      environment 
+    { 
+        PATH = "${dockerHome}/bin:${mavenHome}/bin:${PATH}"
+    }
      agent 
      { 
          docker
@@ -12,10 +16,7 @@ pipeline
          }  
      }
      
-    environment 
-    { 
-        PATH = "${dockerHome}/bin:${mavenHome}/bin:${PATH}"
-    }
+   
    
      stages 
      {
