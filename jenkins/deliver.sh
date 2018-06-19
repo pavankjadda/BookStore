@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-echo 'Install maven'
-apk add maven
-
 
 echo 'The following Maven command installs your Maven-built Java application'
 echo 'into the local Maven repository, which will ultimately be stored in'
@@ -32,17 +29,15 @@ set -x
 //nohup java -jar target/${NAME}-${VERSION}.jar &
 //java -jar target/${NAME}-${VERSION}.jar
 
-echo 'Install docker'
-brew install docker
  
 echo 'Building docker image of the Application'
-docker build -f Dockerfile -t duppoc/bookstore:latest .
+sudo docker build -f Dockerfile -t duppoc/bookstore:latest .
 
 echo 'Login into Dockerhub'
-docker login -u duppoc -p Bcmc@2018
+sudo docker login -u duppoc -p Bcmc@2018
 
 echo 'Pushing to docker hub'
-docker push duppoc/bookstore:latest
+sudo docker push duppoc/bookstore:latest
 
 echo 'Get docker image'
-docker run  -d -p 8081:8081 duppoc/bookstore
+sudo docker run  -d -p 8081:8081 duppoc/bookstore
