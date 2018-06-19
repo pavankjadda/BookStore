@@ -1,13 +1,7 @@
 
 pipeline 
 { 
- agent any
- tools 
-  { 
-   //jdk "${params.JDK_TOOL}"
-   def dockerHome = tool 'MyDocker'
-   def mavenHome  = tool 'MyMaven'
- } 
+ agent any 
   
     stages 
           {
@@ -15,10 +9,8 @@ pipeline
                {
                     steps 
                         {
-                          sh 'maven --version'
-                          sh 'docker ps'
-                          //def dockerHome = tool 'MyDocker'
-                          //def mavenHome  = tool 'MyMaven'
+                          def dockerHome = tool 'MyDocker'
+                          def mavenHome  = tool 'MyMaven'
                           //env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
                         }
 
