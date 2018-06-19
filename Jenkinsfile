@@ -2,13 +2,13 @@ def dockerHome="/usr/local/"
 def mavenHome="/usr/local/"
 pipeline 
 {
-     
-      environment 
+     agent any
+      
+     environment 
           { 
               PATH = "${dockerHome}/bin:${mavenHome}/bin:${PATH}"
           }
      
-  
      stages 
      {
          stage('Build') 
