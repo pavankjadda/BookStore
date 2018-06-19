@@ -21,12 +21,15 @@ node {
 
      stage('Test') 
      {
-         steps {
+         steps 
+         {
              //sh 'mvn test'
              sh 'ifconfig'
          }
-         post {
-             always {
+         post 
+         {
+             always 
+             {
                  //junit 'target/surefire-reports/*.xml'
                  sh 'uname -a'
                   //sh 'apk add docker'
@@ -37,24 +40,21 @@ node {
 
      stage('Deliver for development')
      {
-                 when {
-                     branch 'development'
-                 }
-                 steps {
-                     sh './jenkins/scripts/deliver-for-development.sh'
-                     input message: 'Finished using the web site? (Click "Proceed" to continue)'
-                 }
+         when 
+         {
+             branch 'development'
+         }
+         steps 
+         {
+             sh './jenkins/scripts/deliver-for-development.sh'
+             input message: 'Finished using the web site? (Click "Proceed" to continue)'
+         }
      }
 
      stage('Deploy for production')
      {
-         when {
-             branch 'production'
-         }
-         steps {
-             sh './jenkins/scripts/deploy-for-production.sh'
-             input message: 'Finished using the web site? (Click "Proceed" to continue)'
-         }
+         deployForProduction();
+         
      }
 
      stage('Deliver') 
@@ -65,18 +65,19 @@ node {
              sh 'bash ./jenkins/deliver.sh'
          }
      }
-      stage('Run App')
-       {
-          runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
-      }
+      
 }
 
-def imagePrune(containerName)
+def deployForProduction()
 {
-    try {
-        sh "docker image prune -f"
-        sh "docker stop $containerName"
-    } catch(error){}
+    when {
+             branch 'production'
+         }
+         steps 
+        {
+             sh './jenkins/scripts/deploy-for-production.sh'
+             input message: 'Finished using the web site? (Click "Proceed" to continue)'
+         }
 }
 
 
