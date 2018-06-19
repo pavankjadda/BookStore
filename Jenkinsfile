@@ -23,8 +23,8 @@ pipeline
         {
             steps
             {
-                sh 'mvn test'
-                //sh 'ifconfig'
+                //sh 'mvn test'
+                sh 'ifconfig'
             }
             post {
                 always {
