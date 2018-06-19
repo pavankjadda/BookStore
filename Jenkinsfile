@@ -5,8 +5,8 @@ pipeline
  tools 
   { 
    //jdk "${params.JDK_TOOL}"
-   maven "${params.MAVEN_TOOL}"
-   docker "${params.DOCKER_TOOL}"
+   def dockerHome = tool 'MyDocker'
+   def mavenHome  = tool 'MyMaven'
  } 
   
     stages 
