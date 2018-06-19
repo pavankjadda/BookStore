@@ -85,8 +85,6 @@ pipeline
 
 /* *******************************************************************************************************        */
 
-pipeline
-{
 node {
 
     stage('Initialize')
@@ -155,7 +153,6 @@ node {
      }
    
  }//End of Node
-} //End of pipleline
 
 def deployForProduction()
 {
