@@ -8,67 +8,67 @@ node {
         env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
     }
 
-              stage('Build') 
-              {
-                   steps 
-                   {
-                     //sh 'mvn -B -DskipTests clean package'
-                     sh 'uname -a'
-                        sh 'mvn'
-                        sh 'docker ps'
-                   }
-               }
+      stage('Build') 
+      {
+           steps 
+           {
+             //sh 'mvn -B -DskipTests clean package'
+             sh 'uname -a'
+                sh 'mvn'
+                sh 'docker ps'
+           }
+       }
 
-             stage('Test') 
-             {
-                 steps {
-                     //sh 'mvn test'
-                     sh 'ifconfig'
-                 }
-                 post {
-                     always {
-                         //junit 'target/surefire-reports/*.xml'
-                         sh 'uname -a'
-                          //sh 'apk add docker'
-                          //sh 'service docker start'
-                     }
-                 }
+     stage('Test') 
+     {
+         steps {
+             //sh 'mvn test'
+             sh 'ifconfig'
+         }
+         post {
+             always {
+                 //junit 'target/surefire-reports/*.xml'
+                 sh 'uname -a'
+                  //sh 'apk add docker'
+                  //sh 'service docker start'
              }
+         }
+     }
 
-             stage('Deliver for development')
-             {
-                         when {
-                             branch 'development'
-                         }
-                         steps {
-                             sh './jenkins/scripts/deliver-for-development.sh'
-                             input message: 'Finished using the web site? (Click "Proceed" to continue)'
-                         }
-             }
-
-             stage('Deploy for production')
-             {
+     stage('Deliver for development')
+     {
                  when {
-                     branch 'production'
+                     branch 'development'
                  }
                  steps {
-                     sh './jenkins/scripts/deploy-for-production.sh'
+                     sh './jenkins/scripts/deliver-for-development.sh'
                      input message: 'Finished using the web site? (Click "Proceed" to continue)'
                  }
-             }
+     }
 
-             stage('Deliver') 
-               {
+     stage('Deploy for production')
+     {
+         when {
+             branch 'production'
+         }
+         steps {
+             sh './jenkins/scripts/deploy-for-production.sh'
+             input message: 'Finished using the web site? (Click "Proceed" to continue)'
+         }
+     }
 
-                 steps 
-                 {
-                     sh 'bash ./jenkins/deliver.sh'
-                 }
-             }
-              stage('Run App')
-               {
-                  runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
-              }
+     stage('Deliver') 
+       {
+
+         steps 
+         {
+             sh 'bash ./jenkins/deliver.sh'
+         }
+     }
+      stage('Run App')
+       {
+          runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
+      }
 }
 
 def imagePrune(containerName)
