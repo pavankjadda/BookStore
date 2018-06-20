@@ -12,8 +12,6 @@ node {
         checkout scm
     }
 
-
-   
       stage('Build') 
            {
             sh 'uname -a'

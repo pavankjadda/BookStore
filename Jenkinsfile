@@ -11,24 +11,22 @@ node
     {
         checkout scm
     }
-
-
-      stage('Build')
-           {
-            sh 'uname -a'
-            sh 'mvn -B -DskipTests clean package'
-          }
-
-        stage('Test')
-        {
-            //sh 'mvn test'
-            sh 'ifconfig'
-        }
-
-        stage('Deliver')
+  stage('Build')
           {
-                sh 'bash ./jenkins/deliver-openshift.sh'
-        }
+        sh 'uname -a'
+        sh 'mvn -B -DskipTests clean package'
+      }
+
+    stage('Test')
+    {
+        //sh 'mvn test'
+        sh 'ifconfig'
+    }
+
+    stage('Deliver')
+      {
+            sh 'bash ./jenkins/deliver-openshift.sh'
+    }
 }
 
 def imagePrune(containerName)
@@ -36,5 +34,9 @@ def imagePrune(containerName)
     try {
         sh "docker image prune -f"
         sh "docker stop $containerName"
-    } catch(error){}
+    }
+    catch(error)
+    {
+
+    }
 }
