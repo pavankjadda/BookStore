@@ -32,6 +32,7 @@ node
         }
 }
 
+//ignore this method, not using it
 def imagePrune(containerName)
 {
     try {
