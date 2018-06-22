@@ -30,8 +30,8 @@ set -x
 
 
 echo 'Building docker image of the Application'
-sudo docker build -f Dockerfile -t 172.30.1.1:5000/cicd-project/bookstore:latest .
-sudo docker tag myimage 172.30.1.1:5000/cicd-project/bookstore:latest
+docker build -f Dockerfile -t 172.30.1.1:5000/cicd-project/bookstore:latest .
+docker tag myimage 172.30.1.1:5000/cicd-project/bookstore:latest
 
 
 echo 'Login into Dockerhub'
