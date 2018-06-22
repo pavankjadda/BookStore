@@ -25,9 +25,7 @@ set +x
 echo 'The following command runs and outputs the execution of your Java'
 echo 'application (which Jenkins built using Maven) to the Jenkins UI.'
 set -x
-//ifconfig
-//nohup java -jar target/${NAME}-${VERSION}.jar &
-//java -jar target/${NAME}-${VERSION}.jar
+
 
 
 
@@ -37,12 +35,12 @@ sudo docker tag myimage 172.30.1.1:5000/cicd-project/bookstore:latest
 
 
 echo 'Login into Dockerhub'
-//docker login -u duppoc -p Bcmc@2018
+#docker login -u duppoc -p Bcmc@2018
 oc login https://192.168.64.7:8443 --token=MpjL-m_ctMxNpphadQZO88GF7u3IwKDxC4Lb7p5xVv8
 
 echo 'Pushing to docker hub'
-//docker push duppoc/bookstore:latest
+#docker push duppoc/bookstore:latest
 sudo docker push 172.30.1.1:5000/cicd-project/bookstore:latest
 
-//echo 'Get docker image'
-//docker run  -d -p 8081:8081 duppoc/bookstore
+#echo 'Get docker image'
+#docker run  -d -p 8081:8081 duppoc/bookstore
