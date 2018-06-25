@@ -28,6 +28,7 @@ node
         stage('Deliver')
           {
                 sh 'bash ./jenkins/deliver-openshift.sh'
+              /*
                 sh 'docker build -f Dockerfile -t 172.30.1.1:5000/cicd-project/bookstore:latest .'
                 sh 'docker tag myimage 172.30.1.1:5000/cicd-project/bookstore:latest'
 
@@ -35,7 +36,14 @@ node
                 sh 'oc login https://192.168.64.7:8443 --token=MpjL-m_ctMxNpphadQZO88GF7u3IwKDxC4Lb7p5xVv8'
 
                 //docker push duppoc/bookstore:latest
-                sh 'sudo docker push 172.30.1.1:5000/cicd-project/bookstore:latest'
+                sh 'sudo docker push 172.30.1.1:5000/cicd-project/bookstore:latest' 
+                */
+              docker.withRegistry('172.30.1.1:5000') 
+              {
+                def customImage = docker.build("bookstore:${env.BUILD_ID}")
+                customImage.push()
+                customImage.push('latest')
+              }
         }
 }
 
