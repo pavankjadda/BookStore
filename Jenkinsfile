@@ -27,7 +27,7 @@ node
 
         stage('Deliver')
           {
-                sh 'bash ./jenkins/deliver-openshift.sh'
+                //sh 'bash ./jenkins/deliver-openshift.sh'
               
                 sh 'docker build -f Dockerfile -t 172.30.199.177:5000/bookstore/bookstore:latest .'
                 sh 'docker tag 337b25f8b193 172.30.199.177:5000/bookstore/bookstore:latest'
