@@ -15,6 +15,8 @@ node
 
       stage('Build')
            {
+               sh 'pwd'
+               sh 'docker ps'
             sh 'mvn -B -DskipTests clean package'
           }
 
