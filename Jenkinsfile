@@ -38,7 +38,7 @@ node
                 //docker push duppoc/bookstore:latest
                 sh 'sudo docker push 172.30.1.1:5000/cicd-project/bookstore:latest' 
                 */
-              docker.withRegistry('172.30.1.1:5000') 
+              docker.withRegistry('172.30.199.177:5000) 
               {
                 def customImage = docker.build("bookstore:${env.BUILD_ID}")
                 customImage.push()
