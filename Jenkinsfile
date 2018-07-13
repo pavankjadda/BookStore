@@ -38,7 +38,7 @@ node
                 sh 'docker login -u system -p Kf3rCGet34BeznzHSMET1q5py-5n68lY5Bvt03LmUz0 172.30.199.177:5000'
 
                 //docker push duppoc/bookstore:latest
-                sh 'docker push 172.30.199.177]:5000/bookstore/bookstore:latest'
+                sh 'docker push 172.30.199.177:5000/bookstore/bookstore:latest'
                 
               /*
               docker.withRegistry('172.30.199.177:5000') 
