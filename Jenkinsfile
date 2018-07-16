@@ -31,14 +31,14 @@ node
           {
                 //sh 'bash ./jenkins/deliver-openshift.sh'
               
-                sh 'docker build -f Dockerfile -t 172.30.199.177:5000/bookstore/bookstore:latest .'
-                sh 'docker tag 337b25f8b193 172.30.199.177:5000/bookstore/bookstore:latest'
+            sh 'docker build -f Dockerfile -t 172.30.251.249:5000/bookstore/bookstore:latest .'
+            sh 'docker tag 00e6235949db 172.30.251.249:5000/bookstore/bookstore:latest'
 
-                //docker login -u duppoc -p Bcmc@2018
-                sh 'docker login -u system -p Kf3rCGet34BeznzHSMET1q5py-5n68lY5Bvt03LmUz0 172.30.199.177:5000'
+            //docker login -u duppoc -p Bcmc@2018
+            sh 'docker login -u projectsuser -p L6CHJxs6KVnrLgVg9IEqVyj2jEUTm4jlcwJOug6Mpno 172.30.251.249:5000'
 
-                //docker push duppoc/bookstore:latest
-                sh 'docker push 172.30.199.177:5000/bookstore/bookstore:latest'
+            //docker push duppoc/bookstore:latest
+            sh 'docker push 172.30.251.249:5000/bookstore/bookstore:latest'
                 
               /*
               docker.withRegistry('172.30.199.177:5000') 
