@@ -44,6 +44,8 @@ objects:
   subjects:
   - kind: ServiceAccount
     name: default
+
+
 # Pipeline
 - apiVersion: v1
   kind: BuildConfig
@@ -132,7 +134,7 @@ objects:
                 steps {
                   sh "rm -rf oc-build && mkdir -p oc-build/deployments"
                   sh "cp target/openshift-tasks.war oc-build/deployments/ROOT.war"
-                  
+
                   script {
                     openshift.withCluster() {
                       openshift.withProject(env.DEV_PROJECT) {
@@ -218,6 +220,11 @@ objects:
             }
           }
       type: JenkinsPipeline
+
+
+
+
+
 - apiVersion: v1
   kind: ConfigMap
   metadata:
@@ -263,6 +270,9 @@ objects:
         <annotations/>
         <imagePullSecrets/>
       </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
+
+
+
 # Setup Demo
 - apiVersion: batch/v1
   kind: Job
@@ -285,8 +295,8 @@ objects:
           - -x
           - -c
           - |
-            oc set resources dc/jenkins --limits=cpu=2,memory=2Gi --requests=cpu=100m,memory=512Mi 
-            oc label dc jenkins app=jenkins --overwrite 
+            oc set resources dc/jenkins --limits=cpu=2,memory=2Gi --requests=cpu=100m,memory=512Mi
+            oc label dc jenkins app=jenkins --overwrite
 
             HOSTNAME=$(oc get route jenkins -o template --template='{{.spec.host}}' | sed "s/jenkins-${CICD_NAMESPACE}.//g")
             GOGS_HOSTNAME="gogs-$CICD_NAMESPACE.$HOSTNAME"
@@ -302,7 +312,7 @@ objects:
                   --param=HOSTNAME=$GOGS_HOSTNAME \
                   --param=SKIP_TLS_VERIFY=true
             fi
-            
+
             sleep 5
 
             oc new-app -f http://bit.ly/openshift-sonarqube-embedded-template --param=SONARQUBE_VERSION=7.0 --param=SONAR_MAX_MEMORY=6Gi
