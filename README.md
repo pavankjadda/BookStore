@@ -1,6 +1,28 @@
 # BookStore
 Spring Boot Book Store project demonstrates CICD pipeline with Jenkins
 
+## Introduction
+
+On every pipeline execution, the code goes through the following steps:
+
+1. Code is cloned from Gogs, built, tested and analyzed for bugs and bad patterns
+2. The WAR artifact is pushed to Nexus Repository manager
+3. A container image (_tasks:latest_) is built based on the _Tasks_ application WAR artifact deployed on JBoss EAP 6
+4. The _Tasks_ container image is deployed in a fresh new container in DEV project
+5. If tests successful, the DEV image is tagged with the application version (_tasks:7.x_) in the STAGE project
+6. The staged image is deployed in a fresh new container in the STAGE project
+
+The following diagram shows the steps included in the deployment pipeline:
+
+![](images/pipeline.png?raw=true)
+
+The application used in this pipeline is a JAX-RS application which is available on GitHub and is imported into Gogs during the setup process:
+[https://github.com/OpenShiftDemos/openshift-tasks](https://github.com/OpenShiftDemos/openshift-tasks/tree/eap-7)
+
+## Prerequisites
+* 10+ GB memory
+* JBoss EAP 7 imagestreams imported to OpenShift (see Troubleshooting section for details)
+
 ### Start up an OpenShift cluster:
 
 ```
@@ -29,31 +51,6 @@ $ minishift oc-env
 $ oc login -u system:admin
 $ oc adm policy add-cluster-role-to-user cluster-admin <username>
 ```
-## Introduction
-
-On every pipeline execution, the code goes through the following steps:
-
-1. Code is cloned from Gogs, built, tested and analyzed for bugs and bad patterns
-2. The WAR artifact is pushed to Nexus Repository manager
-3. A container image (_tasks:latest_) is built based on the _Tasks_ application WAR artifact deployed on JBoss EAP 6
-4. The _Tasks_ container image is deployed in a fresh new container in DEV project
-5. If tests successful, the DEV image is tagged with the application version (_tasks:7.x_) in the STAGE project
-6. The staged image is deployed in a fresh new container in the STAGE project
-
-The following diagram shows the steps included in the deployment pipeline:
-
-![](images/pipeline.png?raw=true)
-
-The application used in this pipeline is a JAX-RS application which is available on GitHub and is imported into Gogs during the setup process:
-[https://github.com/OpenShiftDemos/openshift-tasks](https://github.com/OpenShiftDemos/openshift-tasks/tree/eap-7)
-
-## Prerequisites
-* 10+ GB memory
-* JBoss EAP 7 imagestreams imported to OpenShift (see Troubleshooting section for details)
-
-## Deploy on RHPDS
-
-If you have access to RHPDS, provisioning of this demo is automated via the service catalog under **OpenShift Demos &rarr; OpenShift CI/CD for Monolith**. If you don't know what RHPDS is, read the instructions in the next section.
 
 ## Automated Deploy on OpenShift
 You can se the `scripts/provision.sh` script provided to deploy the entire demo:
