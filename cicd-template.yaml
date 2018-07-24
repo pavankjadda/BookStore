@@ -84,7 +84,7 @@ objects:
             stages {
               stage('Build App') {
                 steps {
-                  git branch: 'openshift', url: 'http://gogs/gogs/bookstore.git'
+                  git branch: 'openshift', url: 'http://gogs-project2.192.168.99.100.nip.io/gogs/bookstore.git'
                   script {
                       def pom = readMavenPom file: 'pom.xml'
                       version = pom.version
