@@ -84,7 +84,7 @@ objects:
             stages {
               stage('Build App') {
                 steps {
-                  git branch: 'master', url: 'http://gogs-bookstore.192.168.64.8.nip.io/gogs/bookstore.git'
+                  git branch: 'openshift', url: 'http://gogs/gogs/bookstore.git'
                   script {
                       def pom = readMavenPom file: 'pom.xml'
                       version = pom.version
@@ -132,8 +132,9 @@ objects:
               }
               stage('Build Image') {
                 steps {
-                  sh "rm -rf oc-build && mkdir -p oc-build/deployments"
+                  sh "rm -rf oc-build && mkdir -p oc-build/deployments  && mkdir -p oc-build/configuration"
                   sh "cp target/openshift-tasks.war oc-build/deployments/ROOT.war"
+                  sh "cp configuration/*.properties oc-build/configuration"
 
                   script {
                     openshift.withCluster() {
@@ -187,10 +188,6 @@ objects:
               }
               stage('Promote to STAGE?') {
                 steps {
-                  timeout(time:15, unit:'MINUTES') {
-                      input message: "Promote to STAGE?", ok: "Promote"
-                  }
-
                   script {
                     openshift.withCluster() {
                       openshift.tag("${env.DEV_PROJECT}/tasks:latest", "${env.STAGE_PROJECT}/tasks:${version}")
