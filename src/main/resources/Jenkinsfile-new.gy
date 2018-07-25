@@ -50,7 +50,7 @@ pipeline {
         script {
           openshift.withCluster() {
             openshift.withProject(env.DEV_PROJECT) {
-              openshift.newBuild("--name=bookstore", "--image-stream=bookstore", "--binary=true")
+              openshift.newBuild("--name=bookstore", "--image-stream=bookstore:latest", "--binary=true")
             }
           }
         }
