@@ -20,9 +20,6 @@ public interface BookRepository extends JpaRepository<Book,Long>
 
     <S extends Book> S saveAndFlush(S var1);
 
-    void deleteInBatch(Iterable<Book> var1);
-
-    void deleteAllInBatch();
 
     void flush();
 
