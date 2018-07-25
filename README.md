@@ -1,5 +1,4 @@
-# BookStore
-Spring Boot Book Store project demonstrates CICD pipeline with Jenkins
+# Deploy Spring Boot Project with Jenkins CICD pipeline on OpenShift 
 
 ## Introduction
 
