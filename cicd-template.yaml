@@ -113,7 +113,7 @@ objects:
               }*/
 
               stage('Create Image Builder') {
-              /*
+
                 when {
                   expression {
                     openshift.withCluster() {
@@ -122,12 +122,12 @@ objects:
                       }
                     }
                   }
-                }*/
+                }
                 steps {
                   script {
                     openshift.withCluster() {
                       openshift.withProject(env.DEV_PROJECT) {
-                        openshift.newBuild("--name=bookstore", "--image-stream=bookstore:latest", "--binary=true")
+                        openshift.newBuild("--name=bookstore", "--image-stream=codecentric/springboot-maven3-centos", "--binary=true")
                       }
                     }
                   }
