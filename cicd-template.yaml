@@ -75,7 +75,7 @@ objects:
         - name: STAGE_PROJECT
           value: ${STAGE_PROJECT}
         jenkinsfile: |-
-          def version, mvnCmd = "mvn -s src/main/resources/cicd-settings-nexus3.xml"
+          def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
 
           pipeline {
             agent {
@@ -84,7 +84,7 @@ objects:
             stages {
               stage('Build App') {
                 steps {
-                  git branch: 'openshift', url: 'http://gogs-project2.192.168.99.100.nip.io/gogs/bookstore.git'
+                  git branch: 'openshift', url: 'https://github.com/pavankjadda/BookStore.git'
                   script {
                       def pom = readMavenPom file: 'pom.xml'
                       version = pom.version
@@ -127,7 +127,7 @@ objects:
                   script {
                     openshift.withCluster() {
                       openshift.withProject(env.DEV_PROJECT) {
-                        openshift.newBuild("--name=bookstore", "--image-stream=bookstore", "--binary=true")
+                        openshift.newBuild("--name=bookstore", "--image-stream=bookstore:latest", "--binary=true")
                       }
                     }
                   }
