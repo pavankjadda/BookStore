@@ -5,12 +5,12 @@ Deploy Spring Boot Project with Jenkins CICD pipeline on OpenShift
 
 On every pipeline execution, the code goes through the following steps:
 
-1. Code is cloned from Github or Gogs, built, tested and analyzed for bugs and bad patterns
-2. The JAR artifact is pushed to Nexus Repository manager
+1. Code is cloned from **Github** or Gogs, built, tested and analyzed for bugs and bad patterns
+2. The JAR artifact is pushed to **Nexus** Repository manager
 3. A container image (_bookstore:latest_) is built based on the _bookstore_ application JAR artifact
-4. The _bookstore_ container image is deployed in a fresh new container in BOOKSTORE_DEV project
-5. If tests successful, the BOOKSTORE_DEV image is tagged with the application version (_bookstore:7.x_) in the BOOKSTORE_STAGE project
-6. The staged image is deployed in a fresh new container in the BOOKSTORE_STAGE project
+4. The _bookstore_ container image is deployed in a fresh new container in bookstore_dev project
+5. If tests successful, the **bookstore_dev** image is tagged with the application version in the **bookstore_stage** project
+6. The staged image is deployed in a fresh new container in the **bookstore_stage** project
 
 The following diagram shows the steps included in the deployment pipeline:
 
@@ -19,8 +19,8 @@ The following diagram shows the steps included in the deployment pipeline:
 The application used in this pipeline is a Spring Boot application which is available on **src** folder in this repository 
 
 ## Prerequisites
-* 10+ GB memory
-* JBoss EAP 7 imagestreams imported to OpenShift (see Troubleshooting section for details)
+* 8+ GB memory
+* redhat-openjdk18-openshift imagestreams imported to OpenShift (see Troubleshooting section for details)
 
 ### Start up an OpenShift cluster:
 
@@ -51,7 +51,7 @@ $ oc login -u system:admin
 $ oc adm policy add-cluster-role-to-user cluster-admin <username>
 ```
 
-## Automated Deploy on OpenShift
+## Automated Deploy on OpenShift (Not Preffered)
 You can se the `scripts/provision.sh` script provided to deploy the entire demo:
 
   ```
@@ -61,9 +61,9 @@ You can se the `scripts/provision.sh` script provided to deploy the entire demo:
   ```
 
 ## Manual Deploy on OpenShift
-Follow these [instructions](docs/local-cluster.md) in order to create a local OpenShift cluster. Otherwise using your current OpenShift cluster, create the following projects for CI/CD components, Dev and Stage environments:
+Create the following projects for CI/CD components, Dev and Stage environments:
 
-  ```shell
+  ```
   # Create Projects
   oc new-project dev --display-name="Tasks - Dev"
   oc new-project stage --display-name="Tasks - Stage"
@@ -94,7 +94,8 @@ your own names and use the following to create the demo:
 # Build Application from source code/get from Artifact Repository
   This [article](https://access.redhat.com/documentation/en-us/red_hat_jboss_middleware_for_openshift/3/html-single/red_hat_java_s2i_for_openshift/index) explains
   the whole process. Here is a short version of it
-## Source to Image (S2I) Build
+
+## Source to Image (S2I) Build (Not recommended)
 
 To run and configure the Java S2I for OpenShift image, use the OpenShift S2I process.
 
