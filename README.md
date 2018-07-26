@@ -5,12 +5,12 @@ Deploy Spring Boot Project with Jenkins CICD pipeline on OpenShift
 
 On every pipeline execution, the code goes through the following steps:
 
-1. Code is cloned from Github or Gogs, built, tested and analyzed for bugs and bad patterns
-2. The JAR artifact is pushed to Nexus Repository manager
+1. Code is cloned from **Github** or Gogs, built, tested and analyzed for bugs and bad patterns
+2. The JAR artifact is pushed to **Nexus** Repository manager
 3. A container image (_bookstore:latest_) is built based on the _bookstore_ application JAR artifact
-4. The _bookstore_ container image is deployed in a fresh new container in BOOKSTORE_DEV project
-5. If tests successful, the BOOKSTORE_DEV image is tagged with the application version (_bookstore:7.x_) in the BOOKSTORE_STAGE project
-6. The staged image is deployed in a fresh new container in the BOOKSTORE_STAGE project
+4. The _bookstore_ container image is deployed in a fresh new container in bookstore_dev project
+5. If tests successful, the **bookstore_dev** image is tagged with the application version in the **bookstore_stage** project
+6. The staged image is deployed in a fresh new container in the **bookstore_stage** project
 
 The following diagram shows the steps included in the deployment pipeline:
 
@@ -19,8 +19,8 @@ The following diagram shows the steps included in the deployment pipeline:
 The application used in this pipeline is a Spring Boot application which is available on **src** folder in this repository 
 
 ## Prerequisites
-* 10+ GB memory
-* JBoss EAP 7 imagestreams imported to OpenShift (see Troubleshooting section for details)
+* 8+ GB memory
+* redhat-openjdk18-openshift imagestreams imported to OpenShift (see Troubleshooting section for details)
 
 ### Start up an OpenShift cluster:
 
@@ -51,7 +51,7 @@ $ oc login -u system:admin
 $ oc adm policy add-cluster-role-to-user cluster-admin <username>
 ```
 
-## Automated Deploy on OpenShift
+## Automated Deploy on OpenShift (Not Preffered)
 You can se the `scripts/provision.sh` script provided to deploy the entire demo:
 
   ```
@@ -61,9 +61,9 @@ You can se the `scripts/provision.sh` script provided to deploy the entire demo:
   ```
 
 ## Manual Deploy on OpenShift
-Follow these [instructions](docs/local-cluster.md) in order to create a local OpenShift cluster. Otherwise using your current OpenShift cluster, create the following projects for CI/CD components, Dev and Stage environments:
+Create the following projects for CI/CD components, Dev and Stage environments:
 
-  ```shell
+  ```
   # Create Projects
   oc new-project dev --display-name="Tasks - Dev"
   oc new-project stage --display-name="Tasks - Stage"
@@ -91,10 +91,164 @@ your own names and use the following to create the demo:
   oc new-app -n cicd -f cicd-template.yaml --param DEV_PROJECT=dev-project-name --param STAGE_PROJECT=stage-project-name
   ```
 
-# Build Application from source code/get from Artifact Repository
-  This [article](https://access.redhat.com/documentation/en-us/red_hat_jboss_middleware_for_openshift/3/html-single/red_hat_java_s2i_for_openshift/index) explains
+# Jenkinsfile
+Following Jenkinsfile (this code located inside cicd-template.yaml file) contains steps to automate the build and deployment process. Please make changes to Jenkinsfile if you want to add/remove steps in future. Next step explains the same process in a manual way. 
+
+
+    def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
+          pipeline {
+            agent {
+              label 'maven'
+            }
+            stages {
+              stage('Build App') {
+                steps {
+                  git branch: 'openshift', url: 'https://github.com/pavankjadda/BookStore.git'
+                  script {
+                      def pom = readMavenPom file: 'pom.xml'
+                      version = pom.version
+                  }
+                  sh "${mvnCmd} install -DskipTests=true"
+                }
+              }
+              stage('Test') {
+                steps {
+                  sh "${mvnCmd} test"
+                  step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+                }
+              }
+              stage('Code Analysis') {
+                steps {
+                  script {
+                    sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -DskipTests=true"
+                  }
+                }
+              }
+              /*
+              stage('Archive App') {
+                steps {
+                  sh "${mvnCmd} deploy -DskipTests=true -P nexus3"
+                }
+              }*/
+
+              stage('Create Image Builder') {
+
+                when {
+                  expression {
+                    openshift.withCluster() {
+                      openshift.withProject(env.DEV_PROJECT) {
+                        return !openshift.selector("bc", "bookstore").exists();
+                      }
+                    }
+                  }
+                }
+                steps {
+                  script {
+                    openshift.withCluster() {
+                      openshift.withProject(env.DEV_PROJECT) {
+                        openshift.newBuild("--name=bookstore", "--image-stream=redhat-openjdk18-openshift:1.3", "--binary=true")
+                      }
+                    }
+                  }
+                }
+              }
+              stage('Build Image') {
+                steps {
+                  sh "rm -rf ocp && mkdir -p ocp/deployments"
+                  sh "pwd && ls -la target "
+                  sh "cp target/bookstore-*.jar ocp/deployments"
+
+                  script {
+                    openshift.withCluster() {
+                      openshift.withProject(env.DEV_PROJECT) {
+                        openshift.selector("bc", "bookstore").startBuild("--from-dir=./ocp","--follow", "--wait=true")
+                      }
+                    }
+                  }
+                }
+              }
+              stage('Create DEV') {
+                when {
+                  expression {
+                    openshift.withCluster() {
+                      openshift.withProject(env.DEV_PROJECT) {
+                        return !openshift.selector('dc', 'bookstore').exists()
+                      }
+                    }
+                  }
+                }
+                steps {
+                  script {
+                    openshift.withCluster() {
+                      openshift.withProject(env.DEV_PROJECT) {
+                        def app = openshift.newApp("bookstore:latest")
+                        app.narrow("svc").expose();
+
+                        //http://localhost:8080/actuator/health
+                        openshift.set("probe dc/bookstore --readiness --get-url=http://:8080/actuator/health --initial-delay-seconds=30 --failure-threshold=10 --period-seconds=10")
+                        openshift.set("probe dc/bookstore --liveness  --get-url=http://:8080/actuator/health --initial-delay-seconds=180 --failure-threshold=10 --period-seconds=10")
+
+                        def dc = openshift.selector("dc", "bookstore")
+                        while (dc.object().spec.replicas != dc.object().status.availableReplicas) {
+                            sleep 10
+                        }
+                        openshift.set("triggers", "dc/bookstore", "--manual")
+                      }
+                    }
+                  }
+                }
+              }
+              stage('Deploy DEV') {
+                steps {
+                  script {
+                    openshift.withCluster() {
+                      openshift.withProject(env.DEV_PROJECT) {
+                        openshift.selector("dc", "bookstore").rollout().latest();
+                      }
+                    }
+                  }
+                }
+              }
+              stage('Promote to STAGE?') {
+                steps {
+                  script {
+                    openshift.withCluster() {
+                      openshift.tag("${env.DEV_PROJECT}/bookstore:latest", "${env.STAGE_PROJECT}/bookstore:${version}")
+                    }
+                  }
+                }
+              }
+              stage('Deploy STAGE') {
+                steps {
+                  script {
+                    openshift.withCluster() {
+                      openshift.withProject(env.STAGE_PROJECT) {
+                        if (openshift.selector('dc', 'bookstore').exists()) {
+                          openshift.selector('dc', 'bookstore').delete()
+                          openshift.selector('svc', 'bookstore').delete()
+                          openshift.selector('route', 'bookstore').delete()
+                        }
+
+                        openshift.newApp("bookstore:${version}").narrow("svc").expose()
+                        openshift.set("probe dc/bookstore --readiness --get-url=http://:8080/actuator/health --initial-delay-seconds=30 --failure-threshold=10 --period-seconds=10")
+                        openshift.set("probe dc/bookstore --liveness  --get-url=http://:8080/actuator/health --initial-delay-seconds=180 --failure-threshold=10 --period-seconds=10")
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+
+
+
+# Ignore this step (Wrote only for Understanding purpose) 
+
+Jenkinsfile has same code but this step explains the steps one by one. Wrote this only for understanding purpose. Build Application from source code/get from Artifact Repository. This [article](https://access.redhat.com/documentation/en-us/red_hat_jboss_middleware_for_openshift/3/html-single/red_hat_java_s2i_for_openshift/index) explains
   the whole process. Here is a short version of it
-## Source to Image (S2I) Build
+
+## Source to Image (S2I) Build (Not recommended)
 
 To run and configure the Java S2I for OpenShift image, use the OpenShift S2I process.
 
@@ -184,7 +338,7 @@ Log into the OpenShift instance by running the following command and providing c
 
 Create a new project.
 
-    $ oc new-project <jdk-bin-demo>
+    $ oc new-project <bookstore>
 (Optional) Identify the image stream for the particular image.
 
     $ oc get is -n openshift | grep ^redhat-openjdk | cut -f1 -d ' '
@@ -192,7 +346,7 @@ Create a new project.
 Create new binary build, specifying image stream and application name.
 
     $ oc new-build --binary=true \
-    --name=jdk-us-app \
+    --name=bookstore \
     --image-stream=redhat-openjdk18-openshift:1.3
     --> Found image c1f5b31 (2 months old) in image stream "openshift/redhat-openjdk18-openshift" under tag "latest" for "redhat-openjdk18-openshift"
 
@@ -202,26 +356,26 @@ Create new binary build, specifying image stream and application name.
     Tags: builder, java
 
     * A source build using binary input will be created
-    * The resulting image will be pushed to image stream "jdk-us-app:latest"
+    * The resulting image will be pushed to image stream "bookstore:latest"
     * A binary build was created, use 'start-build --from-dir' to trigger a new build
 
         --> Creating resources with label build=jdk-us-app ...
-            imagestream "jdk-us-app" created
-            buildconfig "jdk-us-app" created
+            imagestream "bookstore" created
+            buildconfig "bookstore" created
         --> Success
 
 Start the binary build. Instruct oc executable to use main directory of the binary build we created in previous step as the directory containing binary input for the OpenShift build.
 
-    $ oc start-build jdk-us-app --from-dir=./ocp --follow
+    $ oc start-build bookstore --from-dir=./ocp --follow
     Uploading directory "ocp" as binary input for the build ...
-    build "jdk-us-app-1" started
+    build "bookstore-1" started
     Receiving source from STDIN as archive ...
     ==================================================================
     Starting S2I Java Build .....
     S2I source build with plain binaries detected
     Copying binaries from /tmp/src/deployments to /deployments ...
     ... done
-    Pushing image 172.30.197.203:5000/jdk-bin-demo/jdk-us-app:latest ...
+    Pushing image 172.30.197.203:5000/bookstore/bookstore:latest ...
     Pushed 0/6 layers, 2% complete
     Pushed 1/6 layers, 24% complete
     Pushed 2/6 layers, 36% complete
@@ -233,10 +387,10 @@ Start the binary build. Instruct oc executable to use main directory of the bina
 
 Create a new OpenShift application based on the build.
 
-    $ oc new-app jdk-us-app
-    --> Found image 66f4e0b (About a minute old) in image stream "jdk-bin-demo/jdk-us-app" under tag "latest" for "jdk-us-app"
+    $ oc new-app bookstore
+    --> Found image 66f4e0b (About a minute old) in image stream "bookstore/bookstore" under tag "latest" for "bookstore"
 
-        jdk-bin-demo/jdk-us-app-1:c1dbfb7a
+        bookstore/bookstore-1:c1dbfb7a
         ----------------------------------
         Platform for building and running plain Java applications (fat-jar and flat classpath)
 
@@ -247,19 +401,19 @@ Create a new OpenShift application based on the build.
           * Other containers can access this service through the hostname "jdk-us-app"
 
     --> Creating resources ...
-        deploymentconfig "jdk-us-app" created
-        service "jdk-us-app" created
+        deploymentconfig "bookstore" created
+        service "bookstore" created
     --> Success
         Run 'oc status' to view your app.
 
 Expose the service as route.
 
     $ oc get svc -o name
-    service/jdk-us-app
+    service/bookstore
 
-    $ oc expose svc/jdk-us-app
-    route "jdk-us-app" exposed
+    $ oc expose svc/bookstore
+    route "bookstore" exposed
 
 Access the application.
 
-Access the application in your browser using the URL http://jdk-us-app-jdk-bin-demo.openshift.example.com
+Access the application in your browser using the URL http://bookstore-bookstore-dev.192.168.99.100.nip.io/books.html#!/
