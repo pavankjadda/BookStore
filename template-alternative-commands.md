@@ -3,10 +3,11 @@
 
 ### This will start Jenkins, sometimes other applications too (not consistent)
 1. Create new application insid the project
-```oc new-app -n <project name> -f cicd-template.yaml
+```
+oc new-app -n <project name> -f cicd-template.yaml
 ```
 2. Use Github instead of gogs. Skip step 3 if you use Github or gitlab
-3.
+3. Start Gogs Server
 ```
 oc new-app -f templates/gogs-template.yaml --param=GOGS_VERSION=0.11.34   --param=HOSTNAME='gogs'  --param=SKIP_TLS_VERIFY=true`
 ```  
