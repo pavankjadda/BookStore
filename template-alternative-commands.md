@@ -2,9 +2,9 @@
 # Make sure increase timeouts for all deployments to 10 minutes or more
 
 ### This will start Jenkins, sometimes other applications too (not consistent)
-1. oc new-app -n <project name> -f cicd-template.yaml
+1. `oc new-app -n <project name> -f cicd-template.yaml`
 2. Use Github instead of gogs. Skip step 3 if you use Github or gitlab
-3. oc new-app -f templates/gogs-template.yaml --param=GOGS_VERSION=0.11.34   --param=HOSTNAME='gogs'  --param=SKIP_TLS_VERIFY=true
+3. `oc new-app -f templates/gogs-template.yaml --param=GOGS_VERSION=0.11.34   --param=HOSTNAME='gogs'  --param=SKIP_TLS_VERIFY=true`
   #if gogs fail in this step, install gogs and postgres db in 2 steps. Do this only if Gogs failed in above step
   ```
       a. Go to homepage and Add to Project --> deploy image --> look for image ' centos/postgresql-95-centos7 ' --> deploy. Make
@@ -18,8 +18,8 @@
 ```
 #Start sonarqube
 
-4. oc new-app -f templates/sonarqube-template.yaml --param=SONARQUBE_VERSION=7.0 --param=SONAR_MAX_MEMORY=2Gi
+4. `oc new-app -f templates/sonarqube-template.yaml --param=SONARQUBE_VERSION=7.0 --param=SONAR_MAX_MEMORY=2Gi`
 
 #Start nexus artifact repository, this may take a while
 
-5. oc new-app -f templates/nexus3-template.yaml --param=NEXUS_VERSION=3.7.1 --param=MAX_MEMORY=2Gi
+5. `oc new-app -f templates/nexus3-template.yaml --param=NEXUS_VERSION=3.7.1 --param=MAX_MEMORY=2Gi`
