@@ -14,7 +14,7 @@ On every pipeline execution, the code goes through the following steps:
 
 The following diagram shows the steps included in the deployment pipeline:
 
-
+![](https://github.com/pavankjadda/BookStore/blob/openshift/src/main/resources/pipeline.png)
 
 The application used in this pipeline is a Spring Boot application which is available on **src** folder in this repository 
 
