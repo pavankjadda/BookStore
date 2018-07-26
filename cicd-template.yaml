@@ -127,7 +127,7 @@ objects:
                   script {
                     openshift.withCluster() {
                       openshift.withProject(env.DEV_PROJECT) {
-                        openshift.newBuild("--name=bookstore", "--image-stream=codecentric/springboot-maven3-centos", "--binary=true")
+                        openshift.newBuild("--name=bookstore", "--image-stream=redhat-openjdk18-openshift:1.3", "--binary=true")
                       }
                     }
                   }
@@ -135,17 +135,14 @@ objects:
               }
               stage('Build Image') {
                 steps {
-                  sh "rm -rf oc-build && mkdir -p oc-build/deployments  && mkdir -p oc-build/configuration"
-                  sh "pwd"
-                  sh "ls -la target"
-                  sh "whoami"
-                  sh "cp target/bookstore-*.jar oc-build/deployments/ROOT.jar"
-                  //sh "cp configuration/*.properties oc-build/configuration"
+                  sh "rm -rf ocp && mkdir -p ocp/deployments"
+                  sh "pwd && ls -la target "
+                  sh "cp target/bookstore-*.jar ocp/deployments"
 
                   script {
                     openshift.withCluster() {
                       openshift.withProject(env.DEV_PROJECT) {
-                        openshift.selector("bc", "bookstore").startBuild("--from-dir=oc-build", "--wait=true")
+                        openshift.selector("bc", "bookstore").startBuild("--from-dir=./ocp","--follow", "--wait=true")
                       }
                     }
                   }
