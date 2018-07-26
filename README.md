@@ -92,7 +92,7 @@ your own names and use the following to create the demo:
   ```
 
 # Jenkinsfile
-Following Jenkinsfile (located inside cicd-template.yaml file) contains steps to automate the build and deployment process. Please make changes to Jenkins if you want to add/remove steps in future.
+Following Jenkinsfile (this code located inside cicd-template.yaml file) contains steps to automate the build and deployment process. Please make changes to Jenkinsfile if you want to add/remove steps in future. Next step explains the same process in a manual way. 
 
 
     def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
