@@ -95,55 +95,52 @@ your own names and use the following to create the demo:
 # Build Application from source code/get from Artifact Repository
   This [article](https://access.redhat.com/documentation/en-us/red_hat_jboss_middleware_for_openshift/3/html-single/red_hat_java_s2i_for_openshift/index) explains
   the whole process. Here is a short version of it
-  3.1. Source to Image (S2I) Build
+## Source to Image (S2I) Build
 
 To run and configure the Java S2I for OpenShift image, use the OpenShift S2I process.
 
 The S2I process for the Java S2I for OpenShift image works as follows:
 
-    Log into the OpenShift instance by running the following command and providing credentials.
+Log into the OpenShift instance by running the following command and providing credentials.
 
     $ oc login
 
-    Create a new project.
+Create a new project.
 
     $ oc new-project <project-name>
 
-    Create a new application using the Java S2I for OpenShift image. <source-location> can be the URL of a git repository or a path to a local folder.
+Create a new application using the Java S2I for OpenShift image. <source-location> can be the URL of a git repository or a path to a local folder.
 
     $ oc new-app redhat-openjdk18-openshift~<source-location>
-
-    Get the service name.
+Get the service name.
 
     $ oc get service
 
-    Expose the service as a route to be able to use it from the browser. <service-name> is the value of NAME field from previous command output.
+Expose the service as a route to be able to use it from the browser. <service-name> is the value of NAME field from previous command output.
 
     $ oc expose svc/<service-name> --port=8080
 
-    Get the route.
+Get the route.
 
     $ oc get route
 
-    Access the application in your browser using the URL (value of HOST/PORT field from previous command output).
+Access the application in your browser using the URL (value of HOST/PORT field from previous command output).
 
-3.2. Binary Builds
-
-To deploy existing applications on OpenShift, you can use the binary source capability.
+## Binary Builds
+### To deploy existing applications on OpenShift, you can use the binary source capability.
 
 Prerequisite:
 
-    Get the JAR application archive or build the application locally.
+Get the JAR application archive or build the application locally.
+The example below uses the undertow-servlet quickstart.
 
-    The example below uses the undertow-servlet quickstart.
-
-        Clone the source code.
+Clone the source code.
 
         $ git clone https://github.com/jboss-openshift/openshift-quickstarts.git
 
-        Configure the Red Hat JBoss Middleware Maven repository.
+Configure the Red Hat JBoss Middleware Maven repository.
 
-        Build the application.
+Build the application.
 
         $ cd openshift-quickstarts/undertow-servlet/
 
@@ -163,79 +160,57 @@ Prerequisite:
         [INFO] Final Memory: 19M/281M
         [INFO] ------------------------------------------------------------------------
 
-    Prepare the directory structure on the local file system.
+Prepare the directory structure on the local file system.
 
-    Application archives in the deployments/ subdirectory of the main binary build directory are copied directly to the standard deployments folder of the image being built on OpenShift. For the application to deploy, the directory hierarchy containing the web application data must be correctly structured.
+Application archives in the deployments/ subdirectory of the main binary build directory are copied directly to the standard deployments folder of the image being built on OpenShift. For the application to deploy, the directory hierarchy containing the web application data must be correctly structured.
 
-    Create main directory for the binary build on the local file system and deployments/ subdirectory within it. Copy the previously built JAR archive to the deployments/ subdirectory:
+Create main directory for the binary build on the local file system and deployments/ subdirectory within it. Copy the previously built JAR archive to the deployments/ subdirectory:
 
-    undertow-servlet]$ ls
+    $ ls
     dependency-reduced-pom.xml  pom.xml  README  src  target
 
     $ mkdir -p ocp/deployments
 
     $ cp target/undertow-servlet.jar ocp/deployments/
 
-    Note
-
-    Location of the standard deployments directory depends on the underlying base image, that was used to deploy the application. See the following table:
-
-    Table 3.1. Standard Location of the Deployments Directory
-    Name of the Underlying Base Image(s)	Standard Location of the Deployments Directory
-
-    EAP for OpenShift 6.4 and 7.0
-
-
-    $JBOSS_HOME/standalone/deployments
-
-    Java S2I for OpenShift
-
-
-    /deployments
-
-    JWS for OpenShift
-
-
-    $JWS_HOME/webapps
+##### Note
+Location of the standard deployments directory depends on the underlying base image, that was used to deploy the application. See the following table:
 
 Perform the following steps to run application consisting of binary input on OpenShift:
 
-    Log into the OpenShift instance by running the following command and providing credentials.
+Log into the OpenShift instance by running the following command and providing credentials.
 
     $ oc login
 
-    Create a new project.
+Create a new project.
 
     $ oc new-project jdk-bin-demo
-
-    (Optional) Identify the image stream for the particular image.
+(Optional) Identify the image stream for the particular image.
 
     $ oc get is -n openshift | grep ^redhat-openjdk | cut -f1 -d ' '
     redhat-openjdk18-openshift
-
-    Create new binary build, specifying image stream and application name.
+Create new binary build, specifying image stream and application name.
 
     $ oc new-build --binary=true \
     --name=jdk-us-app \
     --image-stream=redhat-openjdk18-openshift
     --> Found image c1f5b31 (2 months old) in image stream "openshift/redhat-openjdk18-openshift" under tag "latest" for "redhat-openjdk18-openshift"
 
-        Java Applications
-        -----------------
-        Platform for building and running plain Java applications (fat-jar and flat classpath)
+Java Applications
+-----------------
+Platform for building and running plain Java applications (fat-jar and flat classpath)
+Tags: builder, java
 
-        Tags: builder, java
-
-        * A source build using binary input will be created
-          * The resulting image will be pushed to image stream "jdk-us-app:latest"
-          * A binary build was created, use 'start-build --from-dir' to trigger a new build
+* A source build using binary input will be created
+* The resulting image will be pushed to image stream "jdk-us-app:latest"
+* A binary build was created, use 'start-build --from-dir' to trigger a new build
 
     --> Creating resources with label build=jdk-us-app ...
         imagestream "jdk-us-app" created
         buildconfig "jdk-us-app" created
     --> Success
 
-    Start the binary build. Instruct oc executable to use main directory of the binary build we created in previous step as the directory containing binary input for the OpenShift build.
+Start the binary build. Instruct oc executable to use main directory of the binary build we created in previous step as the directory containing binary input for the OpenShift build.
 
     $ oc start-build jdk-us-app --from-dir=./ocp --follow
     Uploading directory "ocp" as binary input for the build ...
@@ -256,7 +231,7 @@ Perform the following steps to run application consisting of binary input on Ope
     Pushed 6/6 layers, 100% complete
     Push successful
 
-    Create a new OpenShift application based on the build.
+Create a new OpenShift application based on the build.
 
     $ oc new-app jdk-us-app
     --> Found image 66f4e0b (About a minute old) in image stream "jdk-bin-demo/jdk-us-app" under tag "latest" for "jdk-us-app"
@@ -277,7 +252,7 @@ Perform the following steps to run application consisting of binary input on Ope
     --> Success
         Run 'oc status' to view your app.
 
-    Expose the service as route.
+Expose the service as route.
 
     $ oc get svc -o name
     service/jdk-us-app
@@ -285,6 +260,6 @@ Perform the following steps to run application consisting of binary input on Ope
     $ oc expose svc/jdk-us-app
     route "jdk-us-app" exposed
 
-    Access the application.
+Access the application.
 
-    Access the application in your browser using the URL http://jdk-us-app-jdk-bin-demo.openshift.example.com
+Access the application in your browser using the URL http://jdk-us-app-jdk-bin-demo.openshift.example.com
