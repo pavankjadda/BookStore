@@ -338,7 +338,7 @@ Log into the OpenShift instance by running the following command and providing c
 
 Create a new project.
 
-    $ oc new-project <jdk-bin-demo>
+    $ oc new-project <bookstore>
 (Optional) Identify the image stream for the particular image.
 
     $ oc get is -n openshift | grep ^redhat-openjdk | cut -f1 -d ' '
@@ -346,7 +346,7 @@ Create a new project.
 Create new binary build, specifying image stream and application name.
 
     $ oc new-build --binary=true \
-    --name=jdk-us-app \
+    --name=bookstore \
     --image-stream=redhat-openjdk18-openshift:1.3
     --> Found image c1f5b31 (2 months old) in image stream "openshift/redhat-openjdk18-openshift" under tag "latest" for "redhat-openjdk18-openshift"
 
@@ -356,26 +356,26 @@ Create new binary build, specifying image stream and application name.
     Tags: builder, java
 
     * A source build using binary input will be created
-    * The resulting image will be pushed to image stream "jdk-us-app:latest"
+    * The resulting image will be pushed to image stream "bookstore:latest"
     * A binary build was created, use 'start-build --from-dir' to trigger a new build
 
         --> Creating resources with label build=jdk-us-app ...
-            imagestream "jdk-us-app" created
-            buildconfig "jdk-us-app" created
+            imagestream "bookstore" created
+            buildconfig "bookstore" created
         --> Success
 
 Start the binary build. Instruct oc executable to use main directory of the binary build we created in previous step as the directory containing binary input for the OpenShift build.
 
-    $ oc start-build jdk-us-app --from-dir=./ocp --follow
+    $ oc start-build bookstore --from-dir=./ocp --follow
     Uploading directory "ocp" as binary input for the build ...
-    build "jdk-us-app-1" started
+    build "bookstore-1" started
     Receiving source from STDIN as archive ...
     ==================================================================
     Starting S2I Java Build .....
     S2I source build with plain binaries detected
     Copying binaries from /tmp/src/deployments to /deployments ...
     ... done
-    Pushing image 172.30.197.203:5000/jdk-bin-demo/jdk-us-app:latest ...
+    Pushing image 172.30.197.203:5000/bookstore/bookstore:latest ...
     Pushed 0/6 layers, 2% complete
     Pushed 1/6 layers, 24% complete
     Pushed 2/6 layers, 36% complete
@@ -387,10 +387,10 @@ Start the binary build. Instruct oc executable to use main directory of the bina
 
 Create a new OpenShift application based on the build.
 
-    $ oc new-app jdk-us-app
-    --> Found image 66f4e0b (About a minute old) in image stream "jdk-bin-demo/jdk-us-app" under tag "latest" for "jdk-us-app"
+    $ oc new-app bookstore
+    --> Found image 66f4e0b (About a minute old) in image stream "bookstore/bookstore" under tag "latest" for "bookstore"
 
-        jdk-bin-demo/jdk-us-app-1:c1dbfb7a
+        bookstore/bookstore-1:c1dbfb7a
         ----------------------------------
         Platform for building and running plain Java applications (fat-jar and flat classpath)
 
@@ -401,19 +401,19 @@ Create a new OpenShift application based on the build.
           * Other containers can access this service through the hostname "jdk-us-app"
 
     --> Creating resources ...
-        deploymentconfig "jdk-us-app" created
-        service "jdk-us-app" created
+        deploymentconfig "bookstore" created
+        service "bookstore" created
     --> Success
         Run 'oc status' to view your app.
 
 Expose the service as route.
 
     $ oc get svc -o name
-    service/jdk-us-app
+    service/bookstore
 
-    $ oc expose svc/jdk-us-app
-    route "jdk-us-app" exposed
+    $ oc expose svc/bookstore
+    route "bookstore" exposed
 
 Access the application.
 
-Access the application in your browser using the URL http://jdk-us-app-jdk-bin-demo.openshift.example.com
+Access the application in your browser using the URL http://bookstore-bookstore-dev.192.168.99.100.nip.io/books.html#!/
