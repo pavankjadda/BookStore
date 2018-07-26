@@ -244,6 +244,7 @@ Following Jenkinsfile (located inside cicd-template.yaml file) contains steps to
 
 
 # Ignore this step (Wrote only for Understanding purpose) 
+
 Jenkinsfile has same code but this step explains the steps one by one. Wrote this only for understanding purpose. Build Application from source code/get from Artifact Repository. This [article](https://access.redhat.com/documentation/en-us/red_hat_jboss_middleware_for_openshift/3/html-single/red_hat_java_s2i_for_openshift/index) explains
   the whole process. Here is a short version of it
 
