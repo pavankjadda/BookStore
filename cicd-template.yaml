@@ -225,6 +225,7 @@ objects:
 
 
 
+
 - apiVersion: v1
   kind: ConfigMap
   metadata:
@@ -402,4 +403,3 @@ objects:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
         restartPolicy: Never
-        
