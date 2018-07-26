@@ -1,7 +1,7 @@
 
 # Make sure increase timeouts for all deployments to 10 minutes or more
 
-### This will start Jenkins, sometimes other applications too
+### This will start Jenkins, sometimes other applications too (not consistent)
 1. oc new-app -n <project name> -f cicd-template.yaml
 2. Use Github instead of gogs. Skip step 3 if you use Github or gitlab
 3. oc new-app -f templates/gogs-template.yaml --param=GOGS_VERSION=0.11.34   --param=HOSTNAME='gogs'  --param=SKIP_TLS_VERIFY=true
