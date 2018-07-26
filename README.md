@@ -1,4 +1,4 @@
-# Jenkins CICD pipeline on OpenShift
+# Spring Boot Project deployed with Jenkins pipeline on OpenShift 
 Deploy Spring Boot Project with Jenkins CICD pipeline on OpenShift
 
 ## Introduction
