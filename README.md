@@ -126,7 +126,7 @@ Get the route.
 
 Access the application in your browser using the URL (value of HOST/PORT field from previous command output).
 
-## Binary Builds
+## Binary Builds (Build from Jar, War file)
 ### To deploy existing applications on OpenShift, you can use the binary source capability.
 
 Prerequisite:
@@ -166,6 +166,7 @@ Application archives in the deployments/ subdirectory of the main binary build d
 
 Create main directory for the binary build on the local file system and deployments/ subdirectory within it. Copy the previously built JAR archive to the deployments/ subdirectory:
 
+#### ignore above two steps as we already did this through Jenkins file
     $ ls
     dependency-reduced-pom.xml  pom.xml  README  src  target
 
@@ -184,7 +185,7 @@ Log into the OpenShift instance by running the following command and providing c
 
 Create a new project.
 
-    $ oc new-project jdk-bin-demo
+    $ oc new-project <jdk-bin-demo>
 (Optional) Identify the image stream for the particular image.
 
     $ oc get is -n openshift | grep ^redhat-openjdk | cut -f1 -d ' '
@@ -193,22 +194,22 @@ Create new binary build, specifying image stream and application name.
 
     $ oc new-build --binary=true \
     --name=jdk-us-app \
-    --image-stream=redhat-openjdk18-openshift
+    --image-stream=redhat-openjdk18-openshift:1.3
     --> Found image c1f5b31 (2 months old) in image stream "openshift/redhat-openjdk18-openshift" under tag "latest" for "redhat-openjdk18-openshift"
 
-Java Applications
------------------
-Platform for building and running plain Java applications (fat-jar and flat classpath)
-Tags: builder, java
+    Java Applications
+    -----------------
+    Platform for building and running plain Java applications (fat-jar and flat classpath)
+    Tags: builder, java
 
-* A source build using binary input will be created
-* The resulting image will be pushed to image stream "jdk-us-app:latest"
-* A binary build was created, use 'start-build --from-dir' to trigger a new build
+    * A source build using binary input will be created
+    * The resulting image will be pushed to image stream "jdk-us-app:latest"
+    * A binary build was created, use 'start-build --from-dir' to trigger a new build
 
-    --> Creating resources with label build=jdk-us-app ...
-        imagestream "jdk-us-app" created
-        buildconfig "jdk-us-app" created
-    --> Success
+        --> Creating resources with label build=jdk-us-app ...
+            imagestream "jdk-us-app" created
+            buildconfig "jdk-us-app" created
+        --> Success
 
 Start the binary build. Instruct oc executable to use main directory of the binary build we created in previous step as the directory containing binary input for the OpenShift build.
 
