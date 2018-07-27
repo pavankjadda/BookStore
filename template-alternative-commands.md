@@ -31,3 +31,5 @@ oc new-app -f templates/gogs-template.yaml --param=GOGS_VERSION=0.11.34   --para
 ```
 oc new-app -f templates/nexus3-template.yaml --param=NEXUS_VERSION=3.7.1 --param=MAX_MEMORY=2Gi
 ```
+
+//WEBHOOK_SECRET=5t0Ht4mq
