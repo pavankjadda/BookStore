@@ -65,13 +65,13 @@ Create the following projects for CI/CD components, Dev and Stage environments:
 
   ```
   # Create Projects
-  oc new-project dev --display-name="Tasks - Dev"
-  oc new-project stage --display-name="Tasks - Stage"
-  oc new-project cicd --display-name="CI/CD"
+  oc new-project bookstore-dev --display-name="Bookstore - Dev"
+  oc new-project bookstore-stage --display-name="Bookstore - Stage"
+  oc new-project cicd --display-name="cicd"
 
   # Grant Jenkins Access to Projects
-  oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n dev
-  oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n stage
+  oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n bookstore-dev
+  oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n bookstore-stage
   ```  
 
 And then deploy the demo:
