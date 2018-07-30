@@ -41,14 +41,12 @@ minishift ssh docker pull registry.access.redhat.com/openshift3/jenkins-slave-ma
 minishift ssh docker pull registry.access.redhat.com/jboss-eap-7/eap70-openshift
 ```
 
-### Add cluster-admin role to users
+### Get OC environment value and add it shell
 ##### Execute the following command and follow instructions on screen for next steps
 ```
 $ minishift oc-env
  <Execute output of this command to get access to oc environment>
 
-$ oc login -u system:admin
-$ oc adm policy add-cluster-role-to-user cluster-admin <username>
 ```
 
 ## Automated Deploy on OpenShift (Not Preffered)
@@ -72,7 +70,14 @@ Create the following projects for CI/CD components, Dev and Stage environments:
   # Grant Jenkins Access to Projects
   oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n bookstore-dev
   oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n bookstore-stage
+
   ```  
+  if add-role-to-user step fails execute following step and repeat last step again
+  ```
+  oc login -u system:admin
+  oc adm policy add-cluster-role-to-user cluster-admin <username>
+  ```
+  
 Clone the the project and navigate to the folder
 ```
   git clone https://github.com/pavankjadda/BookStore.git --branch=<branch name>
