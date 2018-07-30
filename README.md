@@ -73,7 +73,7 @@ Create the following projects for CI/CD components, Dev and Stage environments:
   oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n bookstore-dev
   oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n bookstore-stage
   ```  
-Clone the the project 
+Clone the the project and navigate to the folder
 ```
   git clone https://github.com/pavankjadda/BookStore.git --branch=<branch name>
 ```
