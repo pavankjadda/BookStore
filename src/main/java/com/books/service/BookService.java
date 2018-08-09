@@ -13,5 +13,7 @@ public interface BookService
 
     Book saveAndFlush(Book book);
 
+    List<Book> saveAll(Iterable<Book> books);
+
     void deleteBook(Book book);
 }
