@@ -82,14 +82,17 @@ Create the following projects for CI/CD components, Dev and Stage environments:
 Clone the the project and navigate to the folder
 ```
   git clone https://github.com/pavankjadda/BookStore.git --branch=<branch name>
+  cd Bookstore
 ```
 
-And then deploy the demo:
+And then deploy the demo with one of the following methods (not both):
 
   ```
   # Deploy Demo
   oc new-app -n cicd -f cicd-template.yaml
 
+  (OR)
+  
   # Deploy Demo woth Eclipse Che
   oc new-app -n cicd -f cicd-template.yaml --param=WITH_CHE=true
   ```
