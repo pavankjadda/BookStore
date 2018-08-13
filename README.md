@@ -26,6 +26,7 @@ The application used in this pipeline is a Spring Boot application which is avai
 
 ```
 minishift addons enable xpaas
+#Adjust memory and cpus based on your PC, macbook or Ubuntu configuration
 minishift start --memory=10240 --cpus=4 --vm-driver=virtualbox
 oc login -u developer
 ```
