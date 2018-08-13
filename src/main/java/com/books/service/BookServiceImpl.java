@@ -39,6 +39,12 @@ public class BookServiceImpl    implements BookService
     }
 
     @Override
+    public List<Book> saveAll(Iterable<Book> books)
+    {
+        return bookRepository.saveAll(books);
+    }
+
+    @Override
     public void deleteBook(Book book)
     {
         bookRepository.delete(book);
