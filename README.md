@@ -26,6 +26,7 @@ The application used in this pipeline is a Spring Boot application which is avai
 
 ```
 minishift addons enable xpaas
+#Adjust memory and cpus based on your PC, macbook or Ubuntu configuration
 minishift start --memory=10240 --cpus=4 --vm-driver=virtualbox
 oc login -u developer
 ```
@@ -81,17 +82,46 @@ Create the following projects for CI/CD components, Dev and Stage environments:
 Clone the the project and navigate to the folder
 ```
   git clone https://github.com/pavankjadda/BookStore.git --branch=<branch name>
+  cd Bookstore
 ```
 
-And then deploy the demo:
+1. Deploy the demo with one of the following methods (not both):
 
   ```
   # Deploy Demo
   oc new-app -n cicd -f cicd-template.yaml
 
+  (OR)
+  
   # Deploy Demo woth Eclipse Che
   oc new-app -n cicd -f cicd-template.yaml --param=WITH_CHE=true
   ```
+2. Use Github instead of gogs. Skip step 3 if you use Github or gitlab
+3. Start Gogs Server
+```
+oc new-app -f templates/gogs-template.yaml --param=GOGS_VERSION=0.11.34   --param=HOSTNAME='gogs'  --param=SKIP_TLS_VERIFY=true`
+```  
+  if gogs fail in this step, install gogs and postgres db in 2 steps. Do this only if Gogs failed in above step
+
+  ```
+      a. Go to homepage and Add to Project --> deploy image --> look for image ' centos/postgresql-95-centos7 ' --> deploy. Make
+         sure to configure the following values before deploying
+            POSTGRESQL_USER = gogs
+            POSTGRESQL_DATABASE = gogs
+            POSTGRESQL_DATABASE = gogs
+      b.Finish steps 4 and 5 before performing this as previous step takes time. Go to homepage and Add to Project --> deploy image --> look for image ' openshiftdemos/gogs ' --> deploy. Once
+        done go to home page, click on route. In new window, enter host ip as pod ip (get it from applications --> pods --> postgres pod --> IP)
+        Enter username and password as 'gogs'. This will connect gogs to Postgres DB started in previous step.
+```
+4. Start sonarqube
+```
+    oc new-app -f templates/sonarqube-template.yaml --param=SONARQUBE_VERSION=7.0 --param=SONAR_MAX_MEMORY=2Gi
+```
+5. Start nexus artifact repository, this may take a while
+```
+oc new-app -f templates/nexus3-template.yaml --param=NEXUS_VERSION=3.7.1 --param=MAX_MEMORY=2Gi
+```
+
 
 To use custom project names, change `cicd`, `dev` and `stage` in the above commands to
 your own names and use the following to create the demo:
