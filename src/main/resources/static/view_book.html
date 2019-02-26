@@ -15,6 +15,7 @@
 <body ng-app="view_book">
 <div class="container-fluid container">
 <form  name="view_book_form" class="form-horizontal"  ng-controller="view_book_controller">
+    <div ng-init="get_book()">
     <fieldset>
         <!-- Text input-->
         <div class="form-group">
@@ -85,6 +86,7 @@
         </div>
 
     </fieldset>
+    </div>
 </form>
 
 
