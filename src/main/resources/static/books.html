@@ -48,15 +48,11 @@
                         </tr>
                         </thead>
                         <tr ng-repeat="book in books_data | filter:q as results track by book.id">
-                            <td>{{book.id}}</td>
+                            <td><a href="view_book.html#!/{{book.id}}">{{book.id}}</a></td>
                             <td>{{book.title}}</td>
                             <td>{{book.numberOfPages}}</td>
                             <td>{{book.cost}}</td>
                             <td>{{book.author}}</td>
-                            <!--<td class="text-center"><a class='btn btn-info btn-xs' href="#"><span-->
-                                    <!--class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#"-->
-                                                                                         <!--class="btn btn-danger btn-xs"><span-->
-                                    <!--class="glyphicon glyphicon-remove"></span> Del</a></td>-->
                         </tr>
 
                     </table>
