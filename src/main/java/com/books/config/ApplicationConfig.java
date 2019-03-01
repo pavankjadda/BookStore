@@ -10,7 +10,7 @@ public class ApplicationConfig implements WebMvcConfigurer
 {
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS =
             {
-                    "classpath:/META-INF/resources/", "classpath:/resources/","classpath:/templates/css/","classpath:/templates/fonts/","classpath:/templates/js/", "classpath:/static/", "classpath:/public/"
+                    "classpath:/static/","classpath:/static/css/","classpath:/static/js/","classpath:/static/fonts/"
             };
 
     @Override

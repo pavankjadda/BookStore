@@ -3,6 +3,7 @@ package com.books.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "book")
@@ -22,19 +23,14 @@ public class Book
     @Column(name = "cost")
     private Double cost;
 
-    @Column(name = "author")
-    private String author;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "book_author",
+            joinColumns = @JoinColumn(name = "author_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id",referencedColumnName = "id"))
+    private List<Author> authors;
 
 
     public Book()
     {
-    }
-
-    public Book(String title, Integer numberOfPages, Double cost, String author)
-    {
-        this.title = title;
-        this.numberOfPages = numberOfPages;
-        this.cost = cost;
-        this.author = author;
     }
 }

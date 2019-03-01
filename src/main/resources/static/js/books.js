@@ -5,7 +5,7 @@ app.controller('books_controller', function($scope,$http)
     {
         $http({
             method : "GET",
-            url : "/books"
+            url : "/api/books"
         }).then(function mySuccess(response)
         {
             $scope.books_data = response.data;

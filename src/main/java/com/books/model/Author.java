@@ -6,9 +6,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "author")
 @Data
-public class User
+public class Author
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +28,13 @@ public class User
 
 
     @OneToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval = true)
-    @JoinTable(name = "employee_address",
-            joinColumns = @JoinColumn(name = "employee_id",referencedColumnName = "id"),
+    @JoinTable(name = "author_address",
+            joinColumns = @JoinColumn(name = "author_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "address_id",referencedColumnName = "id"))
     private List<Address> addresses;
+
+
+    @ManyToMany(mappedBy = "authors")
+    private List<Book> books;
+
 }
