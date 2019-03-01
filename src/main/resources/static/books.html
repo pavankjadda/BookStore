@@ -52,7 +52,7 @@
                             <td>{{book.title}}</td>
                             <td>{{book.numberOfPages}}</td>
                             <td>{{book.cost}}</td>
-                            <td>{{book.authors[0].firstName+' '+book.authors[0].lastName}}</td>
+                            <td><a href="view_author.html#!/{{book.authors[0].id}}">{{book.authors[0].firstName+' '+book.authors[0].lastName}}</a></td>
                         </tr>
 
                     </table>
