@@ -3,7 +3,6 @@ package com.books.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,14 +20,16 @@ public class User
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "cost")
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "author")
+    @Column(name = "phone")
     private String phone;
 
 
-    @OneToMany(cascade=CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "user_id")
-    private List<Address> addresses=new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval = true)
+    @JoinTable(name = "employee_address",
+            joinColumns = @JoinColumn(name = "employee_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id",referencedColumnName = "id"))
+    private List<Address> addresses;
 }
