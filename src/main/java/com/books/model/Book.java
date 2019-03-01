@@ -25,12 +25,16 @@ public class Book
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "book_author",
-            joinColumns = @JoinColumn(name = "author_id",referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "book_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "author_id",referencedColumnName = "id"))
     private List<Author> authors;
 
 
     public Book()
+    {
+    }
+
+    public Book(String title, Integer numberOfPages, Double cost, String author)
     {
     }
 }
