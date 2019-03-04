@@ -1,5 +1,6 @@
 package com.books.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -27,6 +28,7 @@ public class Book
     @JoinTable(name = "book_author",
             joinColumns = @JoinColumn(name = "book_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "author_id",referencedColumnName = "id"))
+    @JsonIgnoreProperties(value = {"addresses"})
     private List<Author> authors;
 
 

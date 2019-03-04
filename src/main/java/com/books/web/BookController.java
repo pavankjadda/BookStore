@@ -21,28 +21,34 @@ public class BookController
         this.bookService=bookService;
     }
 
-    @GetMapping("/books")
+    @GetMapping("/book/list")
     public ResponseEntity<List<Book>> getBooks()
     {
         return ResponseEntity.ok(bookService.findAll());
     }
 
-    @GetMapping("/books/{id}")
+    @GetMapping("/book/{id}")
     public ResponseEntity<Optional<Book>> getBookById(@PathVariable Long id)
     {
         return ResponseEntity.ok(bookService.findById(id));
     }
 
-    @PostMapping("/books/save_book")
+    @PostMapping("/book/save_book")
     public ResponseEntity<Book> updateBook(@RequestBody Book book)
     {
         return ResponseEntity.ok(bookService.saveAndFlush(book));
     }
 
-    @DeleteMapping("/books/{id}")
-    public ResponseEntity<String> deleteBook(@PathVariable Book book)
+    @DeleteMapping("/book/{id}")
+    public ResponseEntity<String> deleteBook(@PathVariable Long id)
     {
-        return ResponseEntity.ok("Book Deleted");
+        Optional<Book> book=bookService.findById(id);
+        if(book.isPresent())
+        {
+            bookService.deleteBook(book.get());
+            return ResponseEntity.ok("Book Deleted");
+        }
+        return ResponseEntity.ok("Book Not found");
     }
 
 }
