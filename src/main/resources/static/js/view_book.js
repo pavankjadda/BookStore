@@ -8,7 +8,7 @@ app.controller('view_book_controller', function($scope,$http, $route, $routePara
     {
         $http({
             method : "GET",
-            url : "/api/books/"+$location.$$path.replace('/','')
+            url : "/api/book/"+$location.$$path.replace('/','')
         }).then(function mySuccess(response)
         {
             $scope.Id = response.data.id;

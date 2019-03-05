@@ -19,69 +19,59 @@
     <fieldset>
         <!-- Text input-->
         <div class="form-group">
-            <h1><label class="col-md-6 control-label">Book</label></h1>
+            <h1><label class="col-md-6 control-label">Author</label></h1>
         </div>
         <br/>
 
         <div class="form-group">
-            <label class="col-md-4 control-label" for="Id">Id</label>
+            <label class="col-md-4 control-label" for="id">Id</label>
             <div class="col-md-4">
-                <input id="Id" name="Id" ng-model="Id" type="text" placeholder="" class="form-control input-md" readonly>
+                <input id="id" name="id" ng-model="id" type="text" placeholder="" class="form-control input-md" readonly>
             </div>
         </div>
 
         <!-- Text input-->
         <div class="form-group">
 
-            <label class="col-md-4 control-label" for="Title">Title</label>
+            <label class="col-md-4 control-label" for="firstName">First Name</label>
             <div class="col-md-4">
-                <input id="Title" name="Title" ng-model="Title" type="text" placeholder="" class="form-control input-md" readonly>
+                <input id="firstName" name="firstName" ng-model="firstName" type="text" placeholder="" class="form-control input-md" readonly>
             </div>
         </div>
 
         <!-- Text input-->
         <div class="form-group">
-            <label class="col-md-4 control-label" for="author">Author</label>
+            <label class="col-md-4 control-label" for="lastName">Last Name</label>
             <div class="col-md-4">
-                <input id="author" name="author" ng-model="author"  type="text" placeholder="" class="form-control input-md" readonly>
-
-            </div>
-        </div>
-
-        <!-- Text input-->
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="number_of_pages">Number of Pages</label>
-            <div class="col-md-4">
-                <input id="number_of_pages" name="number_of_pages"  ng-model="number_of_pages" type="text" placeholder="" class="form-control input-md" readonly>
+                <input id="lastName" name="lastName" ng-model="lastName"  type="text" placeholder="" class="form-control input-md" readonly>
 
             </div>
         </div>
 
         <!-- Text input-->
         <div class="form-group">
-            <label class="col-md-4 control-label" for="cost">Cost</label>
+            <label class="col-md-4 control-label" for="email">Email</label>
             <div class="col-md-4">
-                <input id="cost" name="cost"  ng-model="cost"  type="text" placeholder="" class="form-control input-md" readonly>
+                <input id="email" name="email"  ng-model="email" type="text" placeholder="" class="form-control input-md" readonly>
+
             </div>
         </div>
 
-        <!-- Button -->
+        <!-- Text input-->
         <div class="form-group">
-            <label class="col-md-4 control-label" ></label>
+            <label class="col-md-4 control-label" for="phone">Phone</label>
             <div class="col-md-4">
-                <input type="submit"  name="submit"  class="btn btn-primary" value ="Save" />
-                <br/>
-                <span ng-if="form_error" >Unable to save Book, Please check the information</span>
-                <span style="color: green" ng-if="form_success">Book created with id: {{book_id}}, Click <a href="/books.html">here</a> to all Books</span>
+                <input id="phone" name="phone"  ng-model="phone"  type="text" placeholder="" class="form-control input-md" readonly>
             </div>
         </div>
+
 
     <br/> <br/> <br/>
         <!-- Button -->
         <div class="form-group">
             <label class="col-md-4 control-label" ></label>
             <div class="col-md-4">
-                <a href="/books.html">Click here to see all books</a>
+                <a href="/authors.html">Click here to see all Authors</a>
             </div>
         </div>
 

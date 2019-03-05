@@ -8,14 +8,14 @@ app.controller('view_book_controller', function($scope,$http, $route, $routePara
     {
         $http({
             method : "GET",
-            url : "/api/books/"+$location.$$path.replace('/','')
+            url : "/api/author/"+$location.$$path.replace('/','')
         }).then(function mySuccess(response)
         {
-            $scope.Id = response.data.id;
-            $scope.Title = response.data.title;
-            $scope.author = response.data.author;
-            $scope.number_of_pages = response.data.numberOfPages;
-            $scope.cost = response.data.cost;
+            $scope.id = response.data.id;
+            $scope.firstName = response.data.firstName;
+            $scope.lastName = response.data.lastName;
+            $scope.email = response.data.email;
+            $scope.phone = response.data.phone;
 
         }, function myError(response)
         {

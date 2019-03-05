@@ -1,14 +1,14 @@
-var app = angular.module('books', ["ngRoute"]);
-app.controller('books_controller', function($scope,$http)
+var app = angular.module('authors', ["ngRoute"]);
+app.controller('authors_controller', function($scope,$http)
 {
-    $scope.get_books=function ()
+    $scope.get_authors=function ()
     {
         $http({
             method : "GET",
-            url : "/api/book/list"
+            url : "/api/author/list"
         }).then(function mySuccess(response)
         {
-            $scope.books_data = response.data;
+            $scope.authors_data = response.data;
         }, function myError(response)
         {
             $scope.myWelcome = response.statusText;
@@ -32,5 +32,13 @@ app.config(function($routeProvider)
         })
         .when("/books", {
             templateUrl : "../books.html"
+        }).when("/view_author/:id", {
+        templateUrl : "../view_author.html"
+        })
+        .when("/save_author", {
+            templateUrl : "../save_author.html"
+        })
+        .when("/authors", {
+            templateUrl : "../authors.html"
         });
 });

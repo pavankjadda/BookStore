@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Authors List</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="js/angular.min.js" type="text/javascript"></script>
+    <script src="js/angular-route.js" type="text/javascript"></script>
+    <script src="js/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="js/popper.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="js/authors.js" type="text/javascript"></script>
+    <style>
+        .custab
+        {
+            border: 1px solid #ccc;
+            padding: 5px;
+            margin: 5% 0;
+            box-shadow: 3px 3px 2px #ccc;
+            transition: 0.5s;
+        }
+
+        .custab:hover {
+            box-shadow: 3px 3px 0px transparent;
+            transition: 0.5s;
+        }
+    </style>
+</head>
+
+<body>
+<form name="books" class="form-horizontal">
+    <fieldset>
+        <br/> <br/> <br/>
+        <div class="form-group">
+
+            <div class="container" ng-app="authors">
+                <div class="row col-md-12  custyle" ng-controller="authors_controller" ng-init="get_authors()">
+                    <table class="table table-striped custab">
+                        <thead>
+                        <a href="/save_author.html" class="btn btn-primary btn-xs pull-right"><b>+</b> Create New Author</a>
+                        <tr>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <!--<th class="text-center">Action</th>-->
+                        </tr>
+                        </thead>
+                        <tr ng-repeat="author in authors_data | filter:q as results track by author.id">
+                            <td><a href="view_author.html#!/{{author.id}}">{{author.id}}</a></td>
+                            <td>{{author.firstName}}</td>
+                            <td>{{author.lastName}}</td>
+                            <td>{{author.email}}</td>
+                            <td>{{author.phone}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+</body>
+</html>
