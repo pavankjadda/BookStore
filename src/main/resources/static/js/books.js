@@ -13,8 +13,21 @@ app.controller('books_controller', function($scope,$http)
         {
             $scope.myWelcome = response.statusText;
         });
-    }
+    };
 
+    $scope.delete_book=function (bookId)
+    {
+        $http({
+            method : "DELETE",
+            url : "/api/book/"+bookId
+        }).then(function mySuccess(response)
+        {
+            $scope.get_books();
+        }, function myError(response)
+        {
+            $scope.get_books();
+        });
+    }
 
 });
 

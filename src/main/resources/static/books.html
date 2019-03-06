@@ -44,6 +44,7 @@
                             <th>Number of Pages</th>
                             <th>Cost</th>
                             <th>Author</th>
+                            <th>Action</th>
                             <!--<th class="text-center">Action</th>-->
                         </tr>
                         </thead>
@@ -53,6 +54,7 @@
                             <td>{{book.numberOfPages}}</td>
                             <td>{{book.cost}}</td>
                             <td><a href="view_author.html#!/{{book.authors[0].id}}">{{book.authors[0].firstName+' '+book.authors[0].lastName}}</a></td>
+                            <td><button class="btn-danger" ng-click="delete_book(book.id)">Delete</button></td>
                         </tr>
 
                     </table>
