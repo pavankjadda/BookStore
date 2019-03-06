@@ -6,7 +6,7 @@ app.controller('save_book_controller', function($scope,$http,$location)
         $http({
             method : "POST",
             url : "/api/book/save_book",
-            data: JSON.stringify({title:$scope.Title, cost:$scope.cost, numberOfPages:$scope.number_of_pages,authors:$scope.author.id})
+            data: JSON.stringify({title:$scope.Title, cost:$scope.cost, numberOfPages:$scope.number_of_pages})
 
     }).then(function mySuccess(response)
         {
