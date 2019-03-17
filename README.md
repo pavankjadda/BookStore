@@ -115,11 +115,11 @@ oc new-app -f templates/gogs-template.yaml --param=GOGS_VERSION=0.11.34   --para
 ```
 4. SonarQube with Embedded H2 Database:
 ```
-oc new-app -f sonarqube-template.yaml --param=SONARQUBE_VERSION=6.7
+oc new-app -f templates/sonarqube-template.yaml --param=SONARQUBE_VERSION=6.7
 ```
  or  SonarQube with PostgreSQL Database:
 ```
-oc new-app -f sonarqube-postgresql-template.yaml --param=SONARQUBE_VERSION=6.7
+oc new-app -f templates/sonarqube-postgresql-template.yaml --param=SONARQUBE_VERSION=6.7
 ```
 
 5. Start nexus artifact repository, this may take a while. Remove `--param=MAX_MEMORY=2Gi` if you are deploying this on AWS
