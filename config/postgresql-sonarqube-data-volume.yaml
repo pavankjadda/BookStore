@@ -13,4 +13,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/var/lib/pgsql/data:z"
+    path: "/var/lib/pgsql/data/"
