@@ -1,4 +1,4 @@
-  kind: PersistentVolumeClaim
+kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: sonarqube-data
