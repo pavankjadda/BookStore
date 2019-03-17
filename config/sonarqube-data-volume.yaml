@@ -11,4 +11,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/var/lib/pgsql/data"
+    path: "/opt/sonarqube/data"
