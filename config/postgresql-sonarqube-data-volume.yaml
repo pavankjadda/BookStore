@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
   name: postgresql-sonarqube-data
   annotations:
-    pv.beta.kubernetes.io/gid: "1234"
+    #pv.beta.kubernetes.io/gid: "1234"
   labels:
     type: local
 spec:
