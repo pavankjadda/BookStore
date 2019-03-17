@@ -28,15 +28,16 @@
             <label class="col-md-4 control-label" for="Title">Title</label>
             <div class="col-md-4">
                 <input id="Title" name="Title" ng-model="Title" type="text" placeholder="" class="form-control input-md" required="">
+
             </div>
         </div>
 
         <!-- Text input-->
         <div class="form-group">
             <label class="col-md-4 control-label" for="author">Author</label>
-            <div class="col-md-4" ng-init="get_authors()">
-                <select id="author" ng-model="author" ng-options="author.firstName for author in authors_data">
-                </select>
+            <div class="col-md-4">
+                <input id="author" name="author" ng-model="author"  type="text" placeholder="" class="form-control input-md" required="">
+
             </div>
         </div>
 
@@ -63,7 +64,7 @@
             <label class="col-md-4 control-label" ></label>
             <div class="col-md-4">
                 <input type="submit"  name="submit"  class="btn btn-primary" value ="Save" />
-                <br/>  <br/>  <br/>
+                <br/>
                 <span ng-if="form_error" >Unable to save Book, Please check the information</span>
                 <span style="color: green" ng-if="form_success">Book created with id: {{book_id}}, Click <a href="/books.html">here</a> to all Books</span>
             </div>

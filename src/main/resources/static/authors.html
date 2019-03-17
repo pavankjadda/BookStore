@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>List of Your Books</title>
+    <title>Authors List</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <script src="js/angular.min.js" type="text/javascript"></script>
@@ -10,7 +10,7 @@
     <script src="js/jquery-3.3.1.min.js" type="text/javascript"></script>
     <script src="js/popper.min.js" type="text/javascript"></script>
     <script src="js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="js/books.js" type="text/javascript"></script>
+    <script src="js/authors.js" type="text/javascript"></script>
     <style>
         .custab
         {
@@ -33,31 +33,27 @@
     <fieldset>
         <br/> <br/> <br/>
         <div class="form-group">
-
-            <div class="container" ng-app="books">
-                <div class="row col-md-12  custyle" ng-controller="books_controller" ng-init="get_books()">
+            <div class="container" ng-app="authors">
+                <div class="row col-md-12  custyle" ng-controller="authors_controller" ng-init="get_authors()">
                     <table class="table table-striped custab">
                         <thead>
-                        <a href="/save_book.html" class="btn btn-primary btn-xs pull-right"><b>+</b> Create New Book</a>
+                        <a href="/save_author.html" class="btn btn-primary btn-xs pull-right"><b>+</b> Create New Author</a>
                         <tr>
                             <th>ID</th>
-                            <th>Title</th>
-                            <th>Number of Pages</th>
-                            <th>Cost</th>
-                            <th>Author</th>
-                            <th>Action</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
                             <!--<th class="text-center">Action</th>-->
                         </tr>
                         </thead>
-                        <tr ng-repeat="book in books_data | filter:q as results track by book.id">
-                            <td><a href="view_book.html#!/{{book.id}}">{{book.id}}</a></td>
-                            <td>{{book.title}}</td>
-                            <td>{{book.numberOfPages}}</td>
-                            <td>{{book.cost}}</td>
-                            <td><a href="view_author.html#!/{{book.authors[0].id}}">{{book.authors[0].firstName+' '+book.authors[0].lastName}}</a></td>
-                            <td><button class="btn-danger" ng-click="delete_book(book.id)">Delete</button></td>
+                        <tr ng-repeat="author in authors_data | filter:q as results track by author.id">
+                            <td><a href="view_author.html#!/{{author.id}}">{{author.id}}</a></td>
+                            <td>{{author.firstName}}</td>
+                            <td>{{author.lastName}}</td>
+                            <td>{{author.email}}</td>
+                            <td>{{author.phone}}</td>
                         </tr>
-
                     </table>
                 </div>
 

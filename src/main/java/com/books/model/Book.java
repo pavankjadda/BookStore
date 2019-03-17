@@ -1,13 +1,13 @@
 package com.books.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "book")
 @Data
 public class Book
 {
@@ -15,13 +15,22 @@ public class Book
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(name = "title")
     private String title;
 
+    @Column(name = "number_of_pages")
     private Integer numberOfPages;
 
+    @Column(name = "cost")
     private Double cost;
 
-    private String author;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "book_author",
+            joinColumns = @JoinColumn(name = "book_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id",referencedColumnName = "id"))
+    @JsonIgnoreProperties(value = {"addresses"})
+    private List<Author> authors;
+
 
     public Book()
     {
@@ -29,9 +38,5 @@ public class Book
 
     public Book(String title, Integer numberOfPages, Double cost, String author)
     {
-        this.title = title;
-        this.numberOfPages = numberOfPages;
-        this.cost = cost;
-        this.author = author;
     }
 }

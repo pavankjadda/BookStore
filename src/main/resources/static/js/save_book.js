@@ -3,18 +3,26 @@ app.controller('save_book_controller', function($scope,$http,$location)
 {
     $scope.validate_and_save_book=function ()
     {
+        var book={title:$scope.Title, cost:$scope.cost, numberOfPages:$scope.number_of_pages};
+        var authors=[];
+        authors.push($scope.author.id);
+        authors.push(1002);
+
+        var dataObject={
+            'book': book,
+            'authors':authors
+        };
+
         $http({
             method : "POST",
-            url : "/books/save_book",
-            data: JSON.stringify({title:$scope.Title, cost:$scope.cost, numberOfPages:$scope.number_of_pages,author:$scope.author})
+            url : "/api/book/save_book",
+            data: dataObject
 
     }).then(function mySuccess(response)
         {
             $scope.form_error=false;
             $scope.form_success=true;
             $scope.book_id=response.data.id;
-            //window.alert("Book saved with Id: "+response.data.id);
-            //save_book_form.$pristine = true;
 
         }, function myError(response)
         {
@@ -23,6 +31,20 @@ app.controller('save_book_controller', function($scope,$http,$location)
             $scope.form_success=false;
         });
     };
+
+    $scope.get_authors=function ()
+    {
+        $http({
+            method : "GET",
+            url : "/api/author/list"
+        }).then(function mySuccess(response)
+        {
+            $scope.authors_data = response.data;
+        }, function myError(response)
+        {
+            $scope.myWelcome = response.statusText;
+        });
+    }
 });
 
 app.config(function($routeProvider)
@@ -30,6 +52,9 @@ app.config(function($routeProvider)
     $routeProvider
         .when("/", {
             templateUrl : "../index.html"
+        })
+        .when("/view_book/:id", {
+        templateUrl : "../view_book.html"
         })
         .when("/save_book", {
             templateUrl : "../save_book.html"
