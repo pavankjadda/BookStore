@@ -11,4 +11,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/opt/sonarqube/extensions/"
+    path: "/opt/sonarqube/extensions"
