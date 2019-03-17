@@ -113,10 +113,15 @@ oc new-app -f templates/gogs-template.yaml --param=GOGS_VERSION=0.11.34   --para
         done go to home page, click on route. In new window, enter host ip as pod ip (get it from applications --> pods --> postgres pod --> IP)
         Enter username and password as 'gogs'. This will connect gogs to Postgres DB started in previous step.
 ```
-4. Start sonarqube
+4. SonarQube with Embedded H2 Database:
 ```
-    oc new-app -f templates/sonarqube-template.yaml --param=SONARQUBE_VERSION=7.0 --param=SONAR_MAX_MEMORY=2Gi
+oc new-app -f sonarqube-template.yaml --param=SONARQUBE_VERSION=6.7
 ```
+ or  SonarQube with PostgreSQL Database:
+```
+oc new-app -f sonarqube-postgresql-template.yaml --param=SONARQUBE_VERSION=6.7
+```
+
 5. Start nexus artifact repository, this may take a while. Remove `--param=MAX_MEMORY=2Gi` if you are deploying this on AWS
 ```
 oc new-app -f templates/nexus3-template.yaml --param=NEXUS_VERSION=3.15.2 --param=MAX_MEMORY=2Gi
