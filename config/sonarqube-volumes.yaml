@@ -6,7 +6,7 @@
       kind: PersistentVolume
       apiVersion: v1
       metadata:
-        name: sonarqube-logs
+        name: sonar-logs
         annotations:
         labels:
           type: local
@@ -23,7 +23,7 @@
       kind: PersistentVolume
       apiVersion: v1
       metadata:
-        name: sonarqube-temp
+        name: sonar-temp
         annotations:
           #pv.beta.kubernetes.io/gid: "1234"
         labels:
@@ -41,7 +41,7 @@
     kind: PersistentVolume
     apiVersion: v1
     metadata:
-      name: sonarqube-data
+      name: sonar-data
       labels:
         type: local
     spec:
@@ -57,7 +57,7 @@
     kind: PersistentVolume
     apiVersion: v1
     metadata:
-      name: sonarqube-extensions
+      name: sonar-extensions
       labels:
         type: local
     spec:
