@@ -4,77 +4,81 @@
   "items": [
     {
       "apiVersion": "v1",
-      "kind": "PersistentVolume",
+      "kind": "PersistentVolumeClaim",
       "metadata": {
         "name": "sonarqube-data",
+        "namespace": "cicd"
         "labels": {
           "name": "sonarqube"
         }
       },
       "spec": {
-        "capacity": {
-            "storage": "10Gi"
-          },
+        "storageClassName": "manual"
         "accessModes": [ "ReadWriteOnce" ],
-        "hostPath": {
-          "path": "/opt/sonarqube/data"
+        "resources": {
+          "requests": {
+            "storage": "10Gi"
+          }
         }
       }
     },
     {
       "apiVersion": "v1",
-      "kind": "PersistentVolume",
+      "kind": "PersistentVolumeClaim",
       "metadata": {
         "name": "sonarqube-logs",
+        "namespace": "cicd"
         "labels": {
           "name": "sonarqube"
         }
       },
       "spec": {
-        "capacity": {
-            "storage": "10Gi"
-          },
+        "storageClassName": "manual"
         "accessModes": [ "ReadWriteOnce" ],
-        "hostPath": {
-          "path": "/opt/sonarqube/logs"
+        "resources": {
+          "requests": {
+            "storage": "10Gi"
+          }
         }
       }
     },
     {
       "apiVersion": "v1",
-      "kind": "PersistentVolume",
-      "metadata": {
-        "name": "sonarqube-extensions",
-        "labels": {
-          "name": "sonarqube"
-        }
-      },
-      "spec": {
-        "capacity": {
-            "storage": "10Gi"
-          },
-        "accessModes": [ "ReadWriteOnce" ],
-        "hostPath": {
-          "path": "/opt/sonarqube/extensions"
-        }
-      }
-    },
-    {
-      "apiVersion": "v1",
-      "kind": "PersistentVolume",
+      "kind": "PersistentVolumeClaim",
       "metadata": {
         "name": "sonarqube-temp",
+        "namespace": "cicd"
         "labels": {
           "name": "sonarqube"
         }
       },
       "spec": {
-        "capacity": {
-            "storage": "10Gi"
-          },
+        "storageClassName": "manual"
         "accessModes": [ "ReadWriteOnce" ],
-        "hostPath": {
-          "path": "/opt/sonarqube/temp"
+        "resources": {
+          "requests": {
+            "storage": "10Gi"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "name": "sonarqube-extensions",
+        "namespace": "cicd"
+        "labels": {
+          "name": "sonarqube"
+        }
+      },
+      "spec": {
+        "storageClassName": "manual"
+        "accessModes": [ "ReadWriteOnce" ],
+        "resources": {
+          "requests": {
+            "storage": "10Gi"
+          }
         }
       }
     }
