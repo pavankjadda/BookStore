@@ -16,7 +16,3 @@ spring:
     password: bcmc1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
