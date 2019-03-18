@@ -3,71 +3,80 @@
   "apiVersion": "v1",
   "items": [
     {
-      kind: PersistentVolume
-      apiVersion: v1
-      metadata:
-        name: sonar-logs
-        annotations:
-        labels:
-          type: local
-      spec:
-        storageClassName: manual
-        capacity:
-          storage: 10Gi
-        accessModes:
-          - ReadWriteOnce
-        hostPath:
-          path: "/opt/sonarqube/logs"
+      "apiVersion": "v1",
+      "kind": "PersistentVolume",
+      "metadata": {
+        "name": "sonarqube-data",
+        "labels": {
+          "name": "sonarqube"
+        }
+      },
+      "spec": {
+        "capacity": {
+            "storage": "10Gi"
+          },
+        "accessModes": [ "ReadWriteOnce" ],
+        "hostPath": {
+          "path": "/opt/sonarqube/data"
+        }
+      }
     },
     {
-      kind: PersistentVolume
-      apiVersion: v1
-      metadata:
-        name: sonar-temp
-        annotations:
-          #pv.beta.kubernetes.io/gid: "1234"
-        labels:
-          type: local
-      spec:
-        storageClassName: manual
-        capacity:
-          storage: 10Gi
-        accessModes:
-          - ReadWriteOnce
-        hostPath:
-          path: "/opt/sonarqube/temp"
+      "apiVersion": "v1",
+      "kind": "PersistentVolume",
+      "metadata": {
+        "name": "sonarqube-logs",
+        "labels": {
+          "name": "sonarqube"
+        }
+      },
+      "spec": {
+        "capacity": {
+            "storage": "10Gi"
+          },
+        "accessModes": [ "ReadWriteOnce" ],
+        "hostPath": {
+          "path": "/opt/sonarqube/logs"
+        }
+      }
     },
     {
-    kind: PersistentVolume
-    apiVersion: v1
-    metadata:
-      name: sonar-data
-      labels:
-        type: local
-    spec:
-      storageClassName: manual
-      capacity:
-        storage: 10Gi
-      accessModes:
-        - ReadWriteOnce
-      hostPath:
-        path: "/opt/sonarqube/data"
+      "apiVersion": "v1",
+      "kind": "PersistentVolume",
+      "metadata": {
+        "name": "sonarqube-extensions",
+        "labels": {
+          "name": "sonarqube"
+        }
+      },
+      "spec": {
+        "capacity": {
+            "storage": "10Gi"
+          },
+        "accessModes": [ "ReadWriteOnce" ],
+        "hostPath": {
+          "path": "/opt/sonarqube/extensions"
+        }
+      }
     },
     {
-    kind: PersistentVolume
-    apiVersion: v1
-    metadata:
-      name: sonar-extensions
-      labels:
-        type: local
-    spec:
-      storageClassName: manual
-      capacity:
-        storage: 10Gi
-      accessModes:
-        - ReadWriteOnce
-      hostPath:
-        path: "/opt/sonarqube/extensions"
+      "apiVersion": "v1",
+      "kind": "PersistentVolume",
+      "metadata": {
+        "name": "sonarqube-temp",
+        "labels": {
+          "name": "sonarqube"
+        }
+      },
+      "spec": {
+        "capacity": {
+            "storage": "10Gi"
+          },
+        "accessModes": [ "ReadWriteOnce" ],
+        "hostPath": {
+          "path": "/opt/sonarqube/temp"
+        }
+      }
     }
   ]
 }
