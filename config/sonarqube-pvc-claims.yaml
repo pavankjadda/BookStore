@@ -7,7 +7,6 @@
       "kind": "PersistentVolumeClaim",
       "metadata": {
         "name": "sonarqube-data",
-        "namespace": "cicd",
         "labels": {
           "name": "sonarqube"
         }
@@ -27,7 +26,6 @@
       "kind": "PersistentVolumeClaim",
       "metadata": {
         "name": "sonarqube-logs",
-        "namespace": "cicd",
         "labels": {
           "name": "sonarqube"
         }
@@ -47,7 +45,6 @@
       "kind": "PersistentVolumeClaim",
       "metadata": {
         "name": "sonarqube-temp",
-        "namespace": "cicd",
         "labels": {
           "name": "sonarqube"
         }
@@ -67,7 +64,6 @@
       "kind": "PersistentVolumeClaim",
       "metadata": {
         "name": "sonarqube-extensions",
-        "namespace": "cicd",
         "labels": {
           "name": "sonarqube"
         }
