@@ -1,0 +1,73 @@
+{
+  "kind": "List",
+  "apiVersion": "v1",
+  "items": [
+    {
+      kind: PersistentVolume
+      apiVersion: v1
+      metadata:
+        name: sonar-logs
+        annotations:
+        labels:
+          type: local
+      spec:
+        storageClassName: manual
+        capacity:
+          storage: 10Gi
+        accessModes:
+          - ReadWriteOnce
+        hostPath:
+          path: "/opt/sonarqube/logs"
+    },
+    {
+      kind: PersistentVolume
+      apiVersion: v1
+      metadata:
+        name: sonar-temp
+        annotations:
+          #pv.beta.kubernetes.io/gid: "1234"
+        labels:
+          type: local
+      spec:
+        storageClassName: manual
+        capacity:
+          storage: 10Gi
+        accessModes:
+          - ReadWriteOnce
+        hostPath:
+          path: "/opt/sonarqube/temp"
+    },
+    {
+    kind: PersistentVolume
+    apiVersion: v1
+    metadata:
+      name: sonar-data
+      labels:
+        type: local
+    spec:
+      storageClassName: manual
+      capacity:
+        storage: 10Gi
+      accessModes:
+        - ReadWriteOnce
+      hostPath:
+        path: "/opt/sonarqube/data"
+    },
+    {
+    kind: PersistentVolume
+    apiVersion: v1
+    metadata:
+      name: sonar-extensions
+      labels:
+        type: local
+    spec:
+      storageClassName: manual
+      capacity:
+        storage: 10Gi
+      accessModes:
+        - ReadWriteOnce
+      hostPath:
+        path: "/opt/sonarqube/extensions"
+    }
+  ]
+}
