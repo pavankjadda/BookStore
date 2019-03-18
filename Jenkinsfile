@@ -24,7 +24,7 @@ def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
           stage('Code Analysis') {
             steps {
               script {
-                sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -DskipTests=true"
+                sh "${mvnCmd} sonar:sonar -Dsonar.host.url=https://sonarqube.uscis-demo.com -DskipTests=true"
               }
             }
           }
