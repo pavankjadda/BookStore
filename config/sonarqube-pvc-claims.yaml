@@ -6,9 +6,9 @@
       "apiVersion": "v1",
       "kind": "PersistentVolume",
       "metadata": {
-        "name": "sonar-data",
+        "name": "sonarqube-data",
         "labels": {
-          "name": "sonar"
+          "name": "sonarqube"
         }
       },
       "spec": {
@@ -25,9 +25,9 @@
       "apiVersion": "v1",
       "kind": "PersistentVolume",
       "metadata": {
-        "name": "sonar-logs",
+        "name": "sonarqube-logs",
         "labels": {
-          "name": "sonar"
+          "name": "sonarqube"
         }
       },
       "spec": {
@@ -44,9 +44,9 @@
       "apiVersion": "v1",
       "kind": "PersistentVolume",
       "metadata": {
-        "name": "sonar-extensions",
+        "name": "sonarqube-extensions",
         "labels": {
-          "name": "sonar"
+          "name": "sonarqube"
         }
       },
       "spec": {
@@ -63,9 +63,9 @@
       "apiVersion": "v1",
       "kind": "PersistentVolume",
       "metadata": {
-        "name": "sonar-temp",
+        "name": "sonarqube-temp",
         "labels": {
-          "name": "sonar"
+          "name": "sonarqube"
         }
       },
       "spec": {
