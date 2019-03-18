@@ -1,7 +1,7 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: postgresql-sonarqube-data
+  name: sonarqube-temp
   annotations:
     #pv.beta.kubernetes.io/gid: "1234"
   labels:
