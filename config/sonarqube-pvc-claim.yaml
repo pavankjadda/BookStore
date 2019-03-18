@@ -1,0 +1,82 @@
+{
+  "kind": "List",
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolume",
+      "metadata": {
+        "name": "sonar-data",
+        "labels": {
+          "name": "sonar"
+        }
+      },
+      "spec": {
+        "capacity": {
+            "storage": "10Gi"
+          },
+        "accessModes": [ "ReadWriteOnce" ],
+        "hostPath": {
+          "path": "/opt/sonarqube/data"
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolume",
+      "metadata": {
+        "name": "sonar-logs",
+        "labels": {
+          "name": "sonar"
+        }
+      },
+      "spec": {
+        "capacity": {
+            "storage": "10Gi"
+          },
+        "accessModes": [ "ReadWriteOnce" ],
+        "hostPath": {
+          "path": "/opt/sonarqube/logs"
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolume",
+      "metadata": {
+        "name": "sonar-extensions",
+        "labels": {
+          "name": "sonar"
+        }
+      },
+      "spec": {
+        "capacity": {
+            "storage": "10Gi"
+          },
+        "accessModes": [ "ReadWriteOnce" ],
+        "hostPath": {
+          "path": "/opt/sonarqube/extensions"
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolume",
+      "metadata": {
+        "name": "sonar-temp",
+        "labels": {
+          "name": "sonar"
+        }
+      },
+      "spec": {
+        "capacity": {
+            "storage": "10Gi"
+          },
+        "accessModes": [ "ReadWriteOnce" ],
+        "hostPath": {
+          "path": "/opt/sonarqube/temp"
+        }
+      }
+    }
+  ]
+}
