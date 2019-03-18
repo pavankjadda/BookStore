@@ -1,7 +1,7 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: sonarqube-postgresql
+  name: sonar-postgresql
   annotations:
   labels:
     type: local
