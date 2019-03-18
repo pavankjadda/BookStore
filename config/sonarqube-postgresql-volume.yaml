@@ -1,9 +1,12 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: sonarqube-data
+  name: sonar-postgresql
+  annotations:
   labels:
     type: local
+  annotations:
+    pv.beta.kubernetes.io/gid: "1234"  
 spec:
   storageClassName: manual
   capacity:
@@ -11,4 +14,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/opt/sonarqube/data"
+    path: "/var/lib/pgsql/data/userdata"

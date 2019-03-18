@@ -50,6 +50,7 @@ objects:
       from:
         kind: DockerImage
         name: openshiftdemos/sonarqube:${SONARQUBE_VERSION}
+        #name: sonarqube:${SONARQUBE_VERSION}
       importPolicy: {}
       name: ${SONARQUBE_VERSION}
 - apiVersion: v1
