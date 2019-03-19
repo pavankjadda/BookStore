@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: sonarqube-postgresql
+  name: postgresql
   namespace: cicd
 spec:
   storageClassName: manual
