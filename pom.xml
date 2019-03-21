@@ -88,6 +88,25 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <!-- dev profile -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <activeProfile>dev</activeProfile>
+            </properties>
+        </profile>
+
+        <!-- prod -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <activeProfile>prod</activeProfile>
+            </properties>
+        </profile>
+    </profiles>
+
+
     <build>
         <plugins>
 
@@ -115,9 +134,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.1.3.RELEASE</version>
-            </plugin> 
-
-            
+            </plugin>
         </plugins>
     </build>
 </project>
