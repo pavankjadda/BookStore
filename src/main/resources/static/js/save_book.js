@@ -3,20 +3,14 @@ app.controller('save_book_controller', function($scope,$http,$location)
 {
     $scope.validate_and_save_book=function ()
     {
-        var book={title:$scope.Title, cost:$scope.cost, numberOfPages:$scope.number_of_pages};
         var authors=[];
         authors.push($scope.author.id);
-        authors.push(1002);
-
-        var dataObject={
-            'book': book,
-            'authors':authors
-        };
+        var book={title:$scope.Title, cost:$scope.cost, numberOfPages:$scope.number_of_pages, authors: authors};
 
         $http({
             method : "POST",
             url : "/api/book/save_book",
-            data: dataObject
+            data: book
 
     }).then(function mySuccess(response)
         {
