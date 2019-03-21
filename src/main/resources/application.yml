@@ -1,7 +1,6 @@
 # Server Properties
-server:
-  port: 8080
-
+#server:
+#  port: 8080
 
 # Spring Properties
 spring:
@@ -11,10 +10,8 @@ spring:
     show-sql: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/bookstore?serverTimezone=UTC
+    url: jdbc:mysql://bookstoredbinstance.ccvf1zgq4izw.us-east-2.rds.amazonaws.com:3306/bookstore
     username: root
     password: bcmc1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  profiles:
-    active: test
