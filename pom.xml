@@ -99,7 +99,7 @@
 
         <!-- prod -->
         <profile>
-            <id>dev</id>
+            <id>prod</id>
             <properties>
                 <activeProfile>prod</activeProfile>
             </properties>

@@ -1,8 +1,7 @@
 
-
 # Server Properties
 server:
-  port: 5000
+  port: 8080
 
 # Spring Properties
 spring:
@@ -10,12 +9,16 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
 
   datasource:
     url: jdbc:mysql://bookstoredbinstance.ccvf1zgq4izw.us-east-2.rds.amazonaws.com:3306/bookstore
     username: root
     password: bcmc1234
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   profiles:
     active: ${activeProfile}
 
