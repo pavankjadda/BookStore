@@ -14,7 +14,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
 
   datasource:
-    url: jdbc:mysql://bookstoredbinstance.ccvf1zgq4izw.us-east-2.rds.amazonaws.com:3306/bookstore
+    url: jdbc:mysql://bookstoreinstance.cfwe7db0ch6b.us-east-1.rds.amazonaws.com:3306/bookstore
     username: root
     password: bcmc1234
     driver-class-name: com.mysql.cj.jdbc.Driver
