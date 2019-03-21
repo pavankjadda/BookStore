@@ -13,7 +13,7 @@ app.controller('view_book_controller', function($scope,$http, $route, $routePara
         {
             $scope.Id = response.data.id;
             $scope.Title = response.data.title;
-            $scope.author = response.data.author;
+            $scope.author = response.data["authors"][0].firstName+' '+response.data["authors"][0].lastName;
             $scope.number_of_pages = response.data.numberOfPages;
             $scope.cost = response.data.cost;
 
