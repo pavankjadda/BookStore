@@ -1,0 +1,23 @@
+
+# Server Properties
+server:
+  port: 5000
+
+# Spring Properties
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
+  datasource:
+    url: jdbc:mysql://${rds.hostname}:${rds.port}/${rds.db.name}
+    username: ${rds.username}
+    password: ${rds.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  profiles:
+    active: prod

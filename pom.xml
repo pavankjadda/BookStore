@@ -87,6 +87,14 @@
             </properties>
         </profile>
 
+        <!-- test -->
+        <profile>
+            <id>test</id>
+            <properties>
+                <activeProfile>test</activeProfile>
+            </properties>
+        </profile>
+
         <!-- prod -->
         <profile>
             <id>prod</id>
