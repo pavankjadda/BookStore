@@ -78,31 +78,6 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <!-- dev profile -->
-        <profile>
-            <id>dev</id>
-            <properties>
-                <activeProfile>dev</activeProfile>
-            </properties>
-        </profile>
-
-        <!-- test -->
-        <profile>
-            <id>test</id>
-            <properties>
-                <activeProfile>test</activeProfile>
-            </properties>
-        </profile>
-
-        <!-- prod -->
-        <profile>
-            <id>prod</id>
-            <properties>
-                <activeProfile>prod</activeProfile>
-            </properties>
-        </profile>
-    </profiles>
 
 
     <build>
