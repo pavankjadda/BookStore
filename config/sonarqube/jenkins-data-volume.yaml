@@ -3,6 +3,7 @@ apiVersion: v1
 metadata:
   name: jenkins-data
   annotations:
+      pv.beta.kubernetes.io/gid: "1234"
   labels:
     type: local
 spec:
