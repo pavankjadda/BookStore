@@ -5,6 +5,8 @@ metadata:
   annotations:
   labels:
     type: local
+  annotations:
+    pv.beta.kubernetes.io/gid: "1234"  
 spec:
   storageClassName: manual
   capacity:

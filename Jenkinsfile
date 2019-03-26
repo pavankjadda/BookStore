@@ -17,15 +17,14 @@ def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
           }
           stage('Test') {
             steps {
-                  echo "Test"
-              //sh "${mvnCmd} test -Dspring.profiles.active=test"
-              //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+              sh "${mvnCmd} test"
+              step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
             }
           }
           stage('Code Analysis') {
             steps {
               script {
-                sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000  -DskipTests=true"
+                sh "${mvnCmd} sonar:sonar -Dsonar.host.url=https://sonarqube.uscis-demo.com -DskipTests=true"
               }
             }
           }
@@ -51,7 +50,7 @@ def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
               script {
                 openshift.withCluster() {
                   openshift.withProject(env.DEV_PROJECT) {
-                    openshift.newBuild("--name=bookstore", "--image-stream=openjdk18-openshift", "--binary=true")
+                    openshift.newBuild("--name=bookstore", "--image-stream=redhat-openjdk18-openshift:1.3", "--binary=true")
                   }
                 }
               }
