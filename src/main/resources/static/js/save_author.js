@@ -1,26 +1,23 @@
-var app = angular.module('save_book', ["ngRoute"]);
-app.controller('save_book_controller', function($scope,$http,$location)
+var app = angular.module('save_author', ["ngRoute"]);
+app.controller('save_author_controller', function($scope,$http,$location)
 {
-    $scope.validate_and_save_book=function ()
+    $scope.validate_and_save_author=function ()
     {
-        var authors=[];
-        authors.push($scope.author.id);
-        var book={title:$scope.Title, cost:$scope.cost, numberOfPages:$scope.number_of_pages, authors: authors};
+        var author={firstName:$scope.firstName, lastName:$scope.lastName, email:$scope.email, phone: $scope.phone};
 
         $http({
             method : "POST",
-            url : "/api/book/save_book",
-            data: book
+            url : "/api/author/create",
+            data: author
 
     }).then(function mySuccess(response)
         {
             $scope.form_error=false;
             $scope.form_success=true;
-            $scope.book_id=response.data.id;
+            $scope.author_id=response.data.id;
 
         }, function myError(response)
         {
-            //window.alert("Unable to save, please check Book information");
             $scope.form_error=true;
             $scope.form_success=false;
         });
@@ -48,12 +45,20 @@ app.config(function($routeProvider)
             templateUrl : "../index.html"
         })
         .when("/view_book/:id", {
-        templateUrl : "../view_book.html"
+            templateUrl : "../view_book.html"
         })
         .when("/save_book", {
             templateUrl : "../save_book.html"
         })
         .when("/books", {
             templateUrl : "../books.html"
+        }).when("/view_author/:id", {
+        templateUrl : "../view_author.html"
+    })
+        .when("/save_author", {
+            templateUrl : "../save_author.html"
+        })
+        .when("/authors", {
+            templateUrl : "../authors.html"
         });
 });

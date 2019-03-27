@@ -17,6 +17,13 @@ app.controller('view_book_controller', function($scope,$http, $route, $routePara
             $scope.email = response.data.email;
             $scope.phone = response.data.phone;
 
+            $scope.addressType = response.data.addresses[0].addressType.type;
+            $scope.streetName = response.data.addresses[0].streetName;
+            $scope.apartment = response.data.addresses[0].apartment;
+            $scope.city = response.data.addresses[0].city;
+            $scope.state = response.data.addresses[0].state;
+            $scope.zipCode = response.data.addresses[0].zipCode;
+
         }, function myError(response)
         {
             $scope.myWelcome = response.statusText;
