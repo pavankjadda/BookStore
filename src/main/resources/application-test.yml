@@ -10,21 +10,23 @@ spring:
       ddl-auto: none
     show-sql: true
 
+  #  datasource:
+  #    url: jdbc:mysql://localhost:3306/bookstore?serverTimezone=UTC
+  #    username: root
+  #    password: bcmc1234
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
+
   datasource:
-    url: jdbc:mysql://localhost:3306/bookstore?serverTimezone=UTC
-    username: root
-    password: bcmc1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+
   profiles:
     active: test
 
-#  h2:
-#    console:
-#      enabled: true
-#      path: /h2-console
-#
-#  datasource:
-#    driver-class-name: org.h2.Driver
-#    username: sa
-#    password: sa
-#    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
