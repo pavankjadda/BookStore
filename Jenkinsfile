@@ -1,4 +1,4 @@
-def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
+def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
       pipeline {
        agent any
         tools {
@@ -7,7 +7,7 @@ def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
         stages {
           stage('Build App') {
             steps {
-              git branch: 'openshift', url: 'https://github.com/pavankjadda/BookStore.git'
+              git branch: 'openshift-aws', url: 'https://github.com/pavankjadda/BookStore.git'
               script {
                   def pom = readMavenPom file: 'pom.xml'
                   version = pom.version
@@ -17,14 +17,16 @@ def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
           }
           stage('Test') {
             steps {
-              sh "${mvnCmd} test"
-              step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+                  echo "Tests skipped"
+              //sh "${mvnCmd} test -Dspring.profiles.active=test"
+              //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
             }
           }
           stage('Code Analysis') {
             steps {
               script {
-                sh "${mvnCmd} sonar:sonar -Dsonar.host.url=https://sonarqube.uscis-demo.com -DskipTests=true"
+                //sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000  -DskipTests=true"
+                     echo "Code Analysis skipped" 
               }
             }
           }
@@ -50,7 +52,7 @@ def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
               script {
                 openshift.withCluster() {
                   openshift.withProject(env.DEV_PROJECT) {
-                    openshift.newBuild("--name=bookstore", "--image-stream=redhat-openjdk18-openshift:1.3", "--binary=true")
+                    openshift.newBuild("--name=bookstore", " --strategy=docker ","--docker-image=centos:centos7 ", "--binary=true")
                   }
                 }
               }
@@ -65,7 +67,7 @@ def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
               script {
                 openshift.withCluster() {
                   openshift.withProject(env.DEV_PROJECT) {
-                    openshift.selector("bc", "bookstore").startBuild("--from-dir=./ocp","--follow", "--wait=true")
+                    openshift.selector("bc", "bookstore").startBuild("--from-dir=.","--follow", "--wait=true")
                   }
                 }
               }
