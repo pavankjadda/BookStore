@@ -17,7 +17,7 @@ def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
           }
           stage('Test') {
             steps {
-                  echo "Test"
+                  echo "Tests skipped"
               //sh "${mvnCmd} test -Dspring.profiles.active=test"
               //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
             }
@@ -25,7 +25,8 @@ def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
           stage('Code Analysis') {
             steps {
               script {
-                sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000  -DskipTests=true"
+                //sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000  -DskipTests=true"
+                     echo "Code Analysis skipped" 
               }
             }
           }
@@ -51,7 +52,7 @@ def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
               script {
                 openshift.withCluster() {
                   openshift.withProject(env.DEV_PROJECT) {
-                    openshift.newBuild("--name=bookstore", "--image-stream=openshift-centos-jdk8", "--binary=true")
+                    openshift.newBuild("--name=bookstore", " --strategy=docker ","--docker-image=centos:centos7 ", "--binary=true")
                   }
                 }
               }
@@ -66,7 +67,7 @@ def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
               script {
                 openshift.withCluster() {
                   openshift.withProject(env.DEV_PROJECT) {
-                    openshift.selector("bc", "bookstore").startBuild("--from-dir=./ocp","--follow", "--wait=true")
+                    openshift.selector("bc", "bookstore").startBuild("--from-dir=.","--follow", "--wait=true")
                   }
                 }
               }
