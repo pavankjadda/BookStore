@@ -1,7 +1,7 @@
+
 # Server Properties
 server:
-  port: 8080
-
+  port: 5000
 
 # Spring Properties
 spring:
@@ -17,4 +17,7 @@ spring:
     url: jdbc:mysql://localhost:3306/bookstore?serverTimezone=UTC
     username: root
     password: bcmc1234
-    driverClassName: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  profiles:
+    active: dev

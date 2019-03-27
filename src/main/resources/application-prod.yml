@@ -1,7 +1,7 @@
+
 # Server Properties
 server:
-  port: 8080
-
+  port: 5000
 
 # Spring Properties
 spring:
@@ -14,7 +14,9 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
 
   datasource:
-    url: jdbc:mysql://localhost:3306/bookstore?serverTimezone=UTC
-    username: root
-    password: bcmc1234
-    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${rds.hostname}:${rds.port}/${rds.db.name}
+    username: ${rds.username}
+    password: ${rds.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  profiles:
+    active: prod

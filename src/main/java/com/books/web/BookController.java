@@ -1,16 +1,15 @@
 package com.books.web;
 
+import com.books.dto.BookDto;
+import com.books.model.Author;
 import com.books.model.Book;
+import com.books.repo.AuthorRepository;
 import com.books.service.BookService;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +19,13 @@ public class BookController
 {
     private BookService bookService;
 
+    private final AuthorRepository authorRepository;
+
     @Autowired
-    public BookController(BookService   bookService)
+    public BookController(BookService bookService, AuthorRepository authorRepository)
     {
         this.bookService=bookService;
+        this.authorRepository = authorRepository;
     }
 
     @GetMapping("/book/list")
@@ -38,23 +40,28 @@ public class BookController
         return ResponseEntity.ok(bookService.findById(id));
     }
 
-    @PostMapping("/book/save_book2")
-    public ResponseEntity<Book> updateBook(@RequestBody Book book)
+    @PostMapping("/book/save_book")
+    public ResponseEntity<Book> createBook(@RequestBody BookDto bookDto)
     {
+        Book book=new Book();
+        book.setId(bookDto.getId());
+        book.setCost(bookDto.getCost());
+        book.setNumberOfPages(bookDto.getNumberOfPages());
+        book.setTitle(bookDto.getTitle());
+        book.setAuthors(getAuthorObjects(bookDto.getAuthors()));
+
         return ResponseEntity.ok(bookService.saveAndFlush(book));
     }
 
-    @PostMapping("/book/save_book")
-    public ResponseEntity<Book> createBook(@RequestBody Object bookDataObject) throws IOException
+    private List<Author> getAuthorObjects(long[] authors)
     {
-        System.out.println("bookDataObject: "+bookDataObject.toString());
-        ObjectMapper mapper = new ObjectMapper();
-        JsonFactory factory = mapper.getFactory();
-        JsonParser parser = factory.createParser((String) bookDataObject);
-        JsonNode jsonNode = mapper.readTree(parser);
-
-        //return ResponseEntity.ok(bookService.saveAndFlush(book));
-        return null;
+        List<Author> authorList=new ArrayList<>();
+        for (int i=authors.length;i>0;i--)
+        {
+            Optional<Author> authorOptional=authorRepository.findById(authors[i-1]);
+            authorOptional.ifPresent(authorList::add);
+        }
+        return authorList;
     }
 
     @DeleteMapping("/book/{id}")
