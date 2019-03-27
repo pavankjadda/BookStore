@@ -51,7 +51,7 @@ def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
               script {
                 openshift.withCluster() {
                   openshift.withProject(env.DEV_PROJECT) {
-                    openshift.newBuild("--name=bookstore", "--image-stream=openjdk18-openshift", "--binary=true")
+                    openshift.newBuild("--name=bookstore", "--image-stream=openshift-centos-jdk8", "--binary=true")
                   }
                 }
               }
