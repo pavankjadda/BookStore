@@ -30,7 +30,6 @@
           <url>http://central</url>
           <releases><enabled>true</enabled></releases>
           <snapshots><enabled>true</enabled></snapshots>
-          <updatePolicy>daily</updatePolicy>
         </repository>
       </repositories>
      <pluginRepositories>
