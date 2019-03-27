@@ -14,10 +14,10 @@ spring:
   #    url: jdbc:mysql://localhost:3306/bookstore?serverTimezone=UTC
   #    username: root
   #    password: bcmc1234
-  #    driver-class-name: com.mysql.cj.jdbc.Driver
+  #    driverClassName: com.mysql.cj.jdbc.Driver
 
 #  datasource:
-#    driver-class-name: org.h2.Driver
+#    driverClassName: org.h2.Driver
 #    username: sa
 #    password:
 #    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
