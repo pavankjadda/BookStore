@@ -9,14 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -27,14 +22,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = BookStoreApplication.class)
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:application-integrationtest.yml")
 public class BookControllerIntegrationTest
 {
     @Autowired
     MockMvc mockMvc;
-
-    /*@Autowired
-    BookRepository bookRepository;*/
 
     @Autowired
     BookService bookService;
@@ -68,49 +59,4 @@ public class BookControllerIntegrationTest
         return book;
     }
 
-    @Test
-    public void insertMillionRecords()
-    {
-        Book book=null;
-        List<Book> bookList2=null;
-        List<Book>  bookList=new ArrayList<>();
-        try
-        {
-            for(int i = 0; i< 1000000L; i++)
-            {
-                book=new Book("Spring Boot Essentials",200,12.23,"Craig");
-                bookList.add(book);
-            }
-
-            Iterable<Book> booksIterable=new Iterable<Book>()
-            {
-                @Override
-                public Iterator<Book> iterator()
-                {
-                    return bookList.iterator();
-                }
-            };
-
-            LocalDateTime   startDateTime=LocalDateTime.now();
-            System.out.println("Before Inserting Million Records, Time: "+startDateTime.toString());
-            bookService.saveAll(booksIterable);
-            LocalDateTime   endDateTime=LocalDateTime.now();
-            System.out.println("After Inserting Million Records, Time: "+endDateTime.toString());
-            long hours = startDateTime.until( endDateTime, ChronoUnit.HOURS);
-            long minutes = startDateTime.until( endDateTime, ChronoUnit.MINUTES);
-            long seconds=startDateTime.until(endDateTime,ChronoUnit.SECONDS);
-            long microSeconds=startDateTime.until(endDateTime,ChronoUnit.MICROS);
-            System.out.println("Time took to insert million records, "+minutes+" hours "+minutes+" minutes "+seconds+" seconds "+microSeconds+" microSeconds");
-            bookList2=bookService.findAll();
-            System.out.println("BooksList =>"+bookList2.size());
-
-        }
-        finally
-        {
-            bookList.clear();
-            bookList2.clear();
-        }
-
-
-    }
 }
