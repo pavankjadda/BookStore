@@ -12,8 +12,6 @@ RUN yum -y update; \
     yum install sudo -y; \
     yum clean all -y
 
-# This default user is created in the openshift/base-centos7 image
-USER 1001
 
 # Install OpenJDK 1.8, create required directories.
 RUN yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel && \
@@ -23,6 +21,10 @@ RUN yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel && \
 COPY target/bookstore-*.jar  /opt/openshift
 ENTRYPOINT ["/usr/lib/jvm/java-1.8.0-openjdk"]
 CMD ["-jar", "/opt/openshift/bookstore-*.jar"]
+
+
+# This default user is created in the openshift/base-centos7 image
+USER 1001
 
 # Set the default port for applications built using this image
 EXPOSE 8080
