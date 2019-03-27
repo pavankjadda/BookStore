@@ -1,4 +1,4 @@
-def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
+def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
       pipeline {
        agent any
         tools {
