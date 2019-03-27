@@ -22,9 +22,5 @@ COPY target/bookstore-*.jar  /opt/openshift
 ENTRYPOINT ["/usr/lib/jvm/java-1.8.0-openjdk"]
 CMD ["-jar", "/opt/openshift/bookstore-*.jar"]
 
-
-# This default user is created in the openshift/base-centos7 image
-USER 1001
-
 # Set the default port for applications built using this image
 EXPOSE 8080
