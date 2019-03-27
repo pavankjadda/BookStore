@@ -20,7 +20,7 @@ RUN yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel && \
 
 COPY target/bookstore-*.jar  /opt/openshift
 #ENTRYPOINT ["/usr/lib/jvm/"]
-CMD ["-jar", "/opt/openshift/bookstore-*.jar"]
-
+#CMD ["-jar", "/opt/openshift/bookstore-*.jar"]
+ENTRYPOINT ["java","-jar","/opt/openshift/bookstore-*.jar"]
 # Set the default port for applications built using this image
 EXPOSE 8080
