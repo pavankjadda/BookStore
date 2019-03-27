@@ -37,7 +37,10 @@
           <id>central</id>
           <url>http://central</url>
           <releases><enabled>true</enabled></releases>
-          <snapshots><enabled>true</enabled></snapshots>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>daily</updatePolicy>
+          </snapshots>
         </pluginRepository>
       </pluginRepositories>
     </profile>
