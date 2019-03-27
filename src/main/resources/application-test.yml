@@ -16,11 +16,11 @@ spring:
   #    password: bcmc1234
   #    driver-class-name: com.mysql.cj.jdbc.Driver
 
-  datasource:
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
+#    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
 
   profiles:
     active: test
