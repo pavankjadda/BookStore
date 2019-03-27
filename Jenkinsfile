@@ -17,7 +17,7 @@ def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
           }
           stage('Test') {
             steps {
-                  echo "Test"
+                  echo "Tests skipped"
               //sh "${mvnCmd} test -Dspring.profiles.active=test"
               //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
             }
@@ -25,7 +25,8 @@ def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
           stage('Code Analysis') {
             steps {
               script {
-                sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000  -DskipTests=true"
+                //sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000  -DskipTests=true"
+                     echo "Code Analysis skipped" 
               }
             }
           }
