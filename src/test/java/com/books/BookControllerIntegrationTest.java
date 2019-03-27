@@ -11,13 +11,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = BookStoreApplication.class)
@@ -34,10 +36,9 @@ public class BookControllerIntegrationTest
     public void createPersons_And_GetPersonsTest() throws Exception
     {
         Book book=createBook("Spring Boot Essentials",200,12.23,"Craig");
-        mockMvc.perform(get("/book/list").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].title", is(book.getTitle())));
+        ResultActions resultActions=mockMvc.perform(get("/api/book/list").contentType(MediaType.APPLICATION_JSON))
+                                    .andExpect(status().isOk())
+                                    .andExpect(jsonPath("$[0].title", is(book.getTitle())));
     }
 
     @Test
