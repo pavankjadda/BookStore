@@ -51,7 +51,7 @@ def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
               script {
                 openshift.withCluster() {
                   openshift.withProject(env.DEV_PROJECT) {
-                    openshift.newBuild("--name=bookstore", "--image-stream=openshift-centos-jdk8", "--binary=true")
+                    openshift.newBuild("--name=bookstore", " --strategy=docker ","--docker-image=centos:centos7 ", "--binary=true")
                   }
                 }
               }
@@ -66,7 +66,7 @@ def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
               script {
                 openshift.withCluster() {
                   openshift.withProject(env.DEV_PROJECT) {
-                    openshift.selector("bc", "bookstore").startBuild("--from-dir=./ocp","--follow", "--wait=true")
+                    openshift.selector("bc", "bookstore").startBuild("--from-dir=.","--follow", "--wait=true")
                   }
                 }
               }
