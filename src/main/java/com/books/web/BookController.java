@@ -27,9 +27,9 @@ public class BookController
     }
 
     @GetMapping("/book/list")
-    public ResponseEntity<List<Book>> getBooks()
+    public List<Book> getBooks()
     {
-        return ResponseEntity.ok(bookService.findAll());
+        return bookService.findAll();
     }
 
     @GetMapping("/book/{id}")
