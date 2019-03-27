@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
 
@@ -36,9 +35,10 @@ public class BookControllerIntegrationTest
     public void createPersons_And_GetPersonsTest() throws Exception
     {
         Book book=createBook("Spring Boot Essentials",200,12.23,"Craig");
-        ResultActions resultActions=mockMvc.perform(get("/api/book/list").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/book/list").contentType(MediaType.APPLICATION_JSON))
                                     .andExpect(status().isOk())
                                     .andExpect(jsonPath("$[0].title", is(book.getTitle())));
+
     }
 
     @Test
