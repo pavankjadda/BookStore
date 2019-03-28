@@ -116,10 +116,10 @@ objects:
             timeoutSeconds: 5
           resources:
             requests:
-              cpu: 200m
+              cpu: 500m
               memory: 1Gi
             limits:
-              cpu: 1
+              cpu: 2
               memory: 2Gi
           terminationMessagePath: /dev/termination-log
           volumeMounts:
