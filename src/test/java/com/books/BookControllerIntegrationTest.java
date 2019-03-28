@@ -1,5 +1,6 @@
 package com.books;
 
+import com.books.dto.BookDto;
 import com.books.model.Book;
 import com.books.service.BookService;
 import com.books.util.JsonUtil;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,15 +46,11 @@ public class BookControllerIntegrationTest
     @Test
     public void whenValidInput_createPerson() throws Exception
     {
-        Book book=createBook("Java Edition 9",200,12.23,"Craig");
-        mockMvc.perform(post("/books/save_book").contentType(MediaType.APPLICATION_JSON).content(JsonUtil.toJson(book)));
+        BookDto bookDto=new BookDto(1001,"Java Edition 9",250,19.99);
+        mockMvc.perform(post("/api/book/save_book").contentType(MediaType.APPLICATION_JSON).content(JsonUtil.toJson(bookDto)));
         List<Book> retrievedBooks = bookService.findAll();
-        for(Book retrievedBook : retrievedBooks)
-        {
-            if(retrievedBook.getTitle().equals("Java Edition 9"))
-                System.out.println("Success");
-        }
-        //assertThat(retrivedBooks).extracting(Book::getTitle).isEqualTo("Spring Essentials");
+
+        assertThat(retrievedBooks).extracting(Book::getTitle).contains("Java Edition 9");
     }
 
     private Book createBook(String title, Integer numberOfPages, Double cost, String author)

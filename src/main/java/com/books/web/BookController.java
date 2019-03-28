@@ -35,13 +35,13 @@ public class BookController
     }
 
     @GetMapping("/book/{id}")
-    public ResponseEntity<Optional<Book>> getBookById(@PathVariable Long id)
+    public Optional<Book> getBookById(@PathVariable Long id)
     {
-        return ResponseEntity.ok(bookService.findById(id));
+        return bookService.findById(id);
     }
 
     @PostMapping("/book/save_book")
-    public ResponseEntity<Book> createBook(@RequestBody BookDto bookDto)
+    public Book createBook(@RequestBody BookDto bookDto)
     {
         Book book=new Book();
         book.setId(bookDto.getId());
@@ -50,11 +50,13 @@ public class BookController
         book.setTitle(bookDto.getTitle());
         book.setAuthors(getAuthorObjects(bookDto.getAuthors()));
 
-        return ResponseEntity.ok(bookService.saveAndFlush(book));
+        return bookService.saveAndFlush(book);
     }
 
     private List<Author> getAuthorObjects(long[] authors)
     {
+        if(authors == null)
+            return null;
         List<Author> authorList=new ArrayList<>();
         for (int i=authors.length;i>0;i--)
         {
