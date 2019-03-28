@@ -301,7 +301,7 @@
             "displayName": "Volume Capacity",
             "name": "VOLUME_CAPACITY",
             "required": true,
-            "value": "1Gi"
+            "value": "10Gi"
         },
         {
             "description": "The OpenShift Namespace where the Jenkins ImageStream resides.",

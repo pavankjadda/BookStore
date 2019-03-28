@@ -1,10 +1,14 @@
 def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
-      pipeline {
+      pipeline
+      {
        agent any
-        tools {
-        maven 'M3'
-    }    
-        stages {
+        tools
+        {
+            maven 'M3'
+        }
+
+        stages
+        {
           stage('Build App')
           {
             steps
@@ -18,18 +22,22 @@ def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
               sh "${mvnCmd} install -DskipTests=true"
             }
           }
-          stage('Test') {
-            steps {
+          stage('Test')
+          {
+            steps
+            {
                   echo "Test Stage"
               sh "${mvnCmd} test -Dspring.profiles.active=test"
               //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
             }
           }
-          stage('Code Analysis') {
-            steps {
-              script {
+          stage('Code Analysis')
+          {
+            steps
+             {
+              script
+              {
                       sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000  -DskipTests=true"
-                     //echo "Code Analysis skipped" 
               }
             }
           }
