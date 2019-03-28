@@ -60,7 +60,7 @@ objects:
       deploymentconfig: sonarqube
     name: sonarqube
   spec:
-    replicas: 1
+    replicas: 2
     selector:
       app: sonarqube
       deploymentconfig: sonarqube
@@ -68,7 +68,7 @@ objects:
       resources: {}
       rollingParams:
         intervalSeconds: 1
-        maxSurge: 25%
+        maxSurge: 50%
         maxUnavailable: 25%
         timeoutSeconds: 600
         updatePeriodSeconds: 1
