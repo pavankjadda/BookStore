@@ -7,26 +7,16 @@ server:
 spring:
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
+  datasource:
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
 
-  #  datasource:
-  #    url: jdbc:mysql://localhost:3306/bookstore?serverTimezone=UTC
-  #    username: root
-  #    password: bcmc1234
-  #    driverClassName: com.mysql.cj.jdbc.Driver
-
-#  datasource:
-#    driverClassName: org.h2.Driver
-#    username: sa
-#    password:
-#    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-
-  profiles:
-    active: test
 
   h2:
     console:
       enabled: true
       path: /h2-console
-
