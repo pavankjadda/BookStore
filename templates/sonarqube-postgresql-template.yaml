@@ -60,7 +60,7 @@ objects:
       deploymentconfig: sonarqube
     name: sonarqube
   spec:
-    replicas: 2
+    replicas: 1
     selector:
       app: sonarqube
       deploymentconfig: sonarqube
@@ -68,7 +68,7 @@ objects:
       resources: {}
       rollingParams:
         intervalSeconds: 1
-        maxSurge: 50%
+        maxSurge: 25%
         maxUnavailable: 25%
         timeoutSeconds: 600
         updatePeriodSeconds: 1
@@ -125,6 +125,8 @@ objects:
           volumeMounts:
           - mountPath: /opt/sonarqube/data
             name: sonarqube-data
+          - mountPath: /opt/sonarqube/extension/plugins
+            name: sonarqube-plugins
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -133,6 +135,9 @@ objects:
         - name: sonarqube-data
           persistentVolumeClaim:
             claimName: sonarqube-data
+        - name: sonarqube-plugins
+          persistentVolumeClaim:
+            claimName: sonarqube-plugins
     triggers:
     - type: ConfigChange
     - imageChangeParams:
@@ -267,6 +272,16 @@ objects:
     resources:
       requests:
         storage: ${SONAR_VOLUME_CAPACITY}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: sonarqube-plugins
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: ${SONAR_PLUGIN_CAPACITY}
 parameters:
 - displayName: SonarQube version
   value: "6.7"
@@ -286,5 +301,10 @@ parameters:
 - description: Volume space available for SonarQube
   displayName: SonarQube Volume Capacity
   name: SONAR_VOLUME_CAPACITY
+  required: true
+  value: 8Gi
+- description: Volume space available for SonarQube Plugins
+  displayName: SonarQube Plugins Volume Capacity
+  name: SONAR_PLUGIN_CAPACITY
   required: true
   value: 8Gi
