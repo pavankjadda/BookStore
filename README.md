@@ -113,20 +113,16 @@ oc new-app -f templates/gogs-template.yaml --param=GOGS_VERSION=0.11.34   --para
         done go to home page, click on route. In new window, enter host ip as pod ip (get it from applications --> pods --> postgres pod --> IP)
         Enter username and password as 'gogs'. This will connect gogs to Postgres DB started in previous step.
 ```
-4. SonarQube with Embedded H2 Database:
-```
-oc new-app -f templates/sonarqube-template.yaml --param=SONARQUBE_VERSION=6.7
-```
- or  SonarQube with PostgreSQL Database:
+4. SonarQube with Postgres database, use `sonarqube-template.yaml` for in H2 in memory db sonarqube
+
 ```
 oc new-app -f templates/sonarqube-postgresql-template.yaml --param=SONARQUBE_VERSION=6.7
 ```
 
-5. Start nexus artifact repository, this may take a while. Remove `--param=MAX_MEMORY=2Gi` if you are deploying this on AWS
+5. Start nexus artifact repository, this may take a while
 ```
-oc new-app -f templates/nexus3-template.yaml --param=NEXUS_VERSION=3.15.2 --param=MAX_MEMORY=2Gi
+oc new-app -f templates/nexus3-persistent-template.yaml --param=NEXUS_VERSION=3.15.2
 ```
-
 
 To use custom project names, change `cicd`, `dev` and `stage` in the above commands to
 your own names and use the following to create the demo:
