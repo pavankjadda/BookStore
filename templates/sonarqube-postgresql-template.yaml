@@ -116,15 +116,17 @@ objects:
             timeoutSeconds: 5
           resources:
             requests:
-              cpu: 200m
+              cpu: 500m
               memory: 1Gi
             limits:
-              cpu: 1
+              cpu: 2
               memory: 2Gi
           terminationMessagePath: /dev/termination-log
           volumeMounts:
           - mountPath: /opt/sonarqube/data
             name: sonarqube-data
+          - mountPath: /opt/sonarqube/extension/plugins
+            name: sonarqube-plugins
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -133,6 +135,9 @@ objects:
         - name: sonarqube-data
           persistentVolumeClaim:
             claimName: sonarqube-data
+        - name: sonarqube-plugins
+          persistentVolumeClaim:
+            claimName: sonarqube-plugins
     triggers:
     - type: ConfigChange
     - imageChangeParams:
@@ -267,6 +272,16 @@ objects:
     resources:
       requests:
         storage: ${SONAR_VOLUME_CAPACITY}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: sonarqube-plugins
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: ${SONAR_PLUGIN_CAPACITY}
 parameters:
 - displayName: SonarQube version
   value: "6.7"
@@ -282,9 +297,14 @@ parameters:
   displayName: PostgreSQL Volume Capacity
   name: POSTGRESQL_VOLUME_CAPACITY
   required: true
-  value: 1Gi
+  value: 2Gi
 - description: Volume space available for SonarQube
   displayName: SonarQube Volume Capacity
   name: SONAR_VOLUME_CAPACITY
   required: true
-  value: 1Gi
+  value: 8Gi
+- description: Volume space available for SonarQube Plugins
+  displayName: SonarQube Plugins Volume Capacity
+  name: SONAR_PLUGIN_CAPACITY
+  required: true
+  value: 8Gi
