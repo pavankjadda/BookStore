@@ -1,3 +1,9 @@
+/*
+ Use command '\l' to see databases
+ Use command '\c testdb' to select database
+
+*/
+
 insert into address_type values(5001,'Home');
 insert into  address values(3001,'STE 350','Falls Church','VA','3130 Fairview Park Dr','22043',5001);
 insert into  address values(3002,'STE 349','Falls Church','VA','3130 Fairview Park Dr','22043',5001);
