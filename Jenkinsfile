@@ -19,7 +19,6 @@ pipeline {
 
     stage('Build App') {
       steps {
-          git branch: 'kibana-test', url: 'https://github.com/pavankjadda/BookStore'
         sh "mvn clean install -DskipTests=true"
 
       }
