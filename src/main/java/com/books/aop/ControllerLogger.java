@@ -9,22 +9,13 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-/**
- * The type Controller logger.
- */
+
 @Aspect
 @Component
 public class ControllerLogger
 {
     private Logger logger = LoggerFactory.getLogger(ControllerLogger.class);
 
-    /**
-     * Case Controller pointcut.
-     *
-     * @param proceedingJoinPoint the proceeding join point
-     *
-     * @return the object
-     */
     @Around("within(com.books.web.*)")
     public Object logControllerRequests(ProceedingJoinPoint proceedingJoinPoint)
     {
