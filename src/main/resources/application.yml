@@ -19,6 +19,4 @@ spring:
     password: Gosox07!
     driver-class-name: org.postgresql.Driver
 
-logging:
-  config: file:/opt/configuration/logback.xml
 
