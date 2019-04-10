@@ -46,7 +46,7 @@ pipeline {
       steps {
         sh "rm -rf ocp-rest && mkdir -p ocp-rest/deployments"
         sh "pwd && ls -la target "
-        sh "cp target/mockdb-rest-*.jar ocp-rest/deployments"
+        sh "cp target/bookstore-*.jar ocp-rest/deployments"
         script
                 {
                   openshift.withCluster()
