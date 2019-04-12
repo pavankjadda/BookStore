@@ -50,7 +50,7 @@ $ minishift oc-env
 
 ```
 
-## Automated Deploy on OpenShift (Not Preffered)
+## Automated Deploy on OpenShift (Not Recommended)
 You can se the `scripts/provision.sh` script provided to deploy the entire demo:
 
   ```
