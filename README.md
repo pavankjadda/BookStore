@@ -85,205 +85,188 @@ Clone the the project and navigate to the folder
   cd Bookstore
 ```
 
-1. Deploy the demo with one of the following methods (not both):
+Start Jenkins Persistent pod using following command
 
   ```
-  # Deploy Demo
-  oc new-app -n cicd -f cicd-template.yaml
-
-  (OR)
-  
-  # Deploy Demo woth Eclipse Che
-  oc new-app -n cicd -f cicd-template.yaml --param=WITH_CHE=true
+  oc new-app -n templates/jenkins-persistsnet-template.json
   ```
-2. Use Github instead of gogs. Skip step 3 if you use Github or gitlab
-3. Start Gogs Server
-```
-oc new-app -f templates/gogs-template.yaml --param=GOGS_VERSION=0.11.34   --param=HOSTNAME='gogs'  --param=SKIP_TLS_VERIFY=true`
-```  
-  if gogs fail in this step, install gogs and postgres db in 2 steps. Do this only if Gogs failed in above step
-
-  ```
-      a. Go to homepage and Add to Project --> deploy image --> look for image ' centos/postgresql-95-centos7 ' --> deploy. Make
-         sure to configure the following values before deploying
-            POSTGRESQL_USER = gogs
-            POSTGRESQL_DATABASE = gogs
-            POSTGRESQL_DATABASE = gogs
-      b.Finish steps 4 and 5 before performing this as previous step takes time. Go to homepage and Add to Project --> deploy image --> look for image ' openshiftdemos/gogs ' --> deploy. Once
-        done go to home page, click on route. In new window, enter host ip as pod ip (get it from applications --> pods --> postgres pod --> IP)
-        Enter username and password as 'gogs'. This will connect gogs to Postgres DB started in previous step.
-```
-4. SonarQube with Postgres database, use `sonarqube-template.yaml` for in H2 in memory db sonarqube
+Start SonarQube with Postgres database using following command
 
 ```
 oc new-app -f templates/sonarqube-postgresql-template.yaml --param=SONARQUBE_VERSION=6.7
 ```
 
-5. Start nexus artifact repository, this may take a while
+Start nexus artifact repository with persistent storage
 ```
 oc new-app -f templates/nexus3-persistent-template.yaml --param=NEXUS_VERSION=3.15.2
 ```
 
-To use custom project names, change `cicd`, `dev` and `stage` in the above commands to
-your own names and use the following to create the demo:
-
-  ```shell
-  oc new-app -n cicd -f cicd-template.yaml --param DEV_PROJECT=dev-project-name --param STAGE_PROJECT=stage-project-name
-  ```
-
 # Jenkinsfile
 Following Jenkinsfile (this code located inside cicd-template.yaml file) contains steps to automate the build and deployment process. Please make changes to Jenkinsfile if you want to add/remove steps in future. Next step explains the same process in a manual way. 
+def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
+      pipeline
+      {
+       agent any
+        tools
+        {
+            maven 'M3'
+        }
 
-
-    def version, mvnCmd = "mvn -s config/cicd-settings-nexus3.xml"
-          pipeline {
-            agent {
-              label 'maven'
+        stages
+        {
+          stage('Build App')
+          {
+            steps
+             {
+              git branch: 'openshift-aws', url: 'https://github.com/pavankjadda/BookStore.git'
+              script {
+                  def pom = readMavenPom file: 'pom.xml'
+                  version = pom.version
+              }
+              sh "mvn install -DskipTests=true"
             }
-            stages {
-              stage('Build App') {
-                steps {
-                  git branch: 'openshift', url: 'https://github.com/pavankjadda/BookStore.git'
-                  script {
-                      def pom = readMavenPom file: 'pom.xml'
-                      version = pom.version
-                  }
-                  sh "${mvnCmd} install -DskipTests=true"
-                }
+          }
+          stage('Test')
+          {
+            steps
+            {
+                  echo "Test Stage"
+              sh "${mvnCmd} test -Dspring.profiles.active=test"
+              //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+            }
+          }
+          stage('Code Analysis')
+          {
+            steps
+             {
+              script
+              {
+                      sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000  -DskipTests=true"
               }
-              stage('Test') {
-                steps {
-                  sh "${mvnCmd} test"
-                  step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
-                }
-              }
-              stage('Code Analysis') {
-                steps {
-                  script {
-                    sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -DskipTests=true"
-                  }
-                }
-              }
-              /*
-              stage('Archive App') {
-                steps {
-                  sh "${mvnCmd} deploy -DskipTests=true -P nexus3"
-                }
-              }*/
+            }
+          }
+          /*
+          stage('Archive App') {
+            steps {
+              sh "${mvnCmd} deploy -DskipTests=true -P nexus3"
+            }
+          }*/
 
-              stage('Create Image Builder') {
+          stage('Create Image Builder') {
 
-                when {
-                  expression {
-                    openshift.withCluster() {
-                      openshift.withProject(env.DEV_PROJECT) {
-                        return !openshift.selector("bc", "bookstore").exists();
-                      }
-                    }
-                  }
-                }
-                steps {
-                  script {
-                    openshift.withCluster() {
-                      openshift.withProject(env.DEV_PROJECT) {
-                        openshift.newBuild("--name=bookstore", "--image-stream=redhat-openjdk18-openshift:1.3", "--binary=true")
-                      }
-                    }
+            when {
+              expression {
+                openshift.withCluster() {
+                  openshift.withProject(env.DEV_PROJECT) {
+                    return !openshift.selector("bc", "bookstore").exists()
                   }
                 }
               }
-              stage('Build Image') {
-                steps {
-                  sh "rm -rf ocp && mkdir -p ocp/deployments"
-                  sh "pwd && ls -la target "
-                  sh "cp target/bookstore-*.jar ocp/deployments"
-
-                  script {
-                    openshift.withCluster() {
-                      openshift.withProject(env.DEV_PROJECT) {
-                        openshift.selector("bc", "bookstore").startBuild("--from-dir=./ocp","--follow", "--wait=true")
-                      }
-                    }
-                  }
-                }
-              }
-              stage('Create DEV') {
-                when {
-                  expression {
-                    openshift.withCluster() {
-                      openshift.withProject(env.DEV_PROJECT) {
-                        return !openshift.selector('dc', 'bookstore').exists()
-                      }
-                    }
-                  }
-                }
-                steps {
-                  script {
-                    openshift.withCluster() {
-                      openshift.withProject(env.DEV_PROJECT) {
-                        def app = openshift.newApp("bookstore:latest")
-                        app.narrow("svc").expose();
-
-                        //http://localhost:8080/actuator/health
-                        openshift.set("probe dc/bookstore --readiness --get-url=http://:8080/actuator/health --initial-delay-seconds=30 --failure-threshold=10 --period-seconds=10")
-                        openshift.set("probe dc/bookstore --liveness  --get-url=http://:8080/actuator/health --initial-delay-seconds=180 --failure-threshold=10 --period-seconds=10")
-
-                        def dc = openshift.selector("dc", "bookstore")
-                        while (dc.object().spec.replicas != dc.object().status.availableReplicas) {
-                            sleep 10
-                        }
-                        openshift.set("triggers", "dc/bookstore", "--manual")
-                      }
-                    }
-                  }
-                }
-              }
-              stage('Deploy DEV') {
-                steps {
-                  script {
-                    openshift.withCluster() {
-                      openshift.withProject(env.DEV_PROJECT) {
-                        openshift.selector("dc", "bookstore").rollout().latest();
-                      }
-                    }
-                  }
-                }
-              }
-              stage('Promote to STAGE?') {
-                steps {
-                  script {
-                    openshift.withCluster() {
-                      openshift.tag("${env.DEV_PROJECT}/bookstore:latest", "${env.STAGE_PROJECT}/bookstore:${version}")
-                    }
-                  }
-                }
-              }
-              stage('Deploy STAGE') {
-                steps {
-                  script {
-                    openshift.withCluster() {
-                      openshift.withProject(env.STAGE_PROJECT) {
-                        if (openshift.selector('dc', 'bookstore').exists()) {
-                          openshift.selector('dc', 'bookstore').delete()
-                          openshift.selector('svc', 'bookstore').delete()
-                          openshift.selector('route', 'bookstore').delete()
-                        }
-
-                        openshift.newApp("bookstore:${version}").narrow("svc").expose()
-                        openshift.set("probe dc/bookstore --readiness --get-url=http://:8080/actuator/health --initial-delay-seconds=30 --failure-threshold=10 --period-seconds=10")
-                        openshift.set("probe dc/bookstore --liveness  --get-url=http://:8080/actuator/health --initial-delay-seconds=180 --failure-threshold=10 --period-seconds=10")
-                      }
-                    }
+            }
+            steps {
+              script {
+                openshift.withCluster() {
+                  openshift.withProject(env.DEV_PROJECT) {
+                    openshift.newBuild("--name=bookstore", "--image-stream=redhat-openjdk18-openshift:latest", "--binary=true")
                   }
                 }
               }
             }
           }
+          stage('Build Image') {
+            steps {
+              sh "rm -rf ocp && mkdir -p ocp/deployments"
+              sh "pwd && ls -la target "
+              sh "cp target/bookstore-*.jar ocp/deployments"
+
+              script {
+                openshift.withCluster() {
+                  openshift.withProject(env.DEV_PROJECT) {
+                    openshift.selector("bc", "bookstore").startBuild("--from-dir=./ocp","--follow", "--wait=true")
+                  }
+                }
+              }
+            }
+          }
+          stage('Create DEV') {
+            when {
+              expression {
+                openshift.withCluster() {
+                  openshift.withProject(env.DEV_PROJECT) {
+                    return !openshift.selector('dc', 'bookstore').exists()
+                  }
+                }
+              }
+            }
+            steps {
+              script {
+                openshift.withCluster() {
+                  openshift.withProject(env.DEV_PROJECT) {
+                    def app = openshift.newApp("bookstore:latest")
+                    app.narrow("svc").expose()
+
+                    //http://localhost:8080/actuator/health
+                    openshift.set("probe dc/bookstore --readiness --get-url=http://:8080/actuator/health --initial-delay-seconds=30 --failure-threshold=10 --period-seconds=10")
+                    openshift.set("probe dc/bookstore --liveness  --get-url=http://:8080/actuator/health --initial-delay-seconds=180 --failure-threshold=10 --period-seconds=10")
+
+                    def dc = openshift.selector("dc", "bookstore")
+                    while (dc.object().spec.replicas != dc.object().status.availableReplicas) {
+                        sleep 10
+                    }
+                    openshift.set("triggers", "dc/bookstore", "--manual")
+                  }
+                }
+              }
+            }
+          }
+          stage('Deploy DEV') {
+            steps {
+              script {
+                openshift.withCluster() {
+                  openshift.withProject(env.DEV_PROJECT) {
+                    openshift.selector("dc", "bookstore").rollout().latest()
+                  }
+                }
+              }
+            }
+          }
+          stage('Promote to STAGE?') {
+            steps {
+              script {
+                openshift.withCluster() {
+                  openshift.tag("${env.DEV_PROJECT}/bookstore:latest", "${env.STAGE_PROJECT}/bookstore:${version}")
+                }
+              }
+            }
+          }
+          stage('Deploy STAGE') {
+            steps {
+              script {
+                openshift.withCluster() {
+                  openshift.withProject(env.STAGE_PROJECT) {
+                    if (openshift.selector('dc', 'bookstore').exists()) {
+                      openshift.selector('dc', 'bookstore').delete()
+                      openshift.selector('svc', 'bookstore').delete()
+                      openshift.selector('route', 'bookstore').delete()
+                    }
+
+                    openshift.newApp("bookstore:${version}").narrow("svc").expose()
+                    openshift.set("probe dc/bookstore --readiness --get-url=http://:8080/actuator/health --initial-delay-seconds=30 --failure-threshold=10 --period-seconds=10")
+                    openshift.set("probe dc/bookstore --liveness  --get-url=http://:8080/actuator/health --initial-delay-seconds=180 --failure-threshold=10 --period-seconds=10")
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+---
 
 
 
 
-# Ignore this step (Wrote only for Understanding purpose) 
+# Ignore this step (Explains the backend process) 
 
 Jenkinsfile has same code but this step explains the steps one by one. Wrote this only for understanding purpose. Build Application from source code/get from Artifact Repository. This [article](https://access.redhat.com/documentation/en-us/red_hat_jboss_middleware_for_openshift/3/html-single/red_hat_java_s2i_for_openshift/index) explains
   the whole process. Here is a short version of it
