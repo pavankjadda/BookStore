@@ -18,14 +18,13 @@ def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
                   def pom = readMavenPom file: 'pom.xml'
                   version = pom.version
               }
-              sh "mvn install -DskipTests=true"
+              sh "mvn clean install -DskipTests=true"
             }
           }
           stage('Test')
           {
             steps
             {
-                  echo "Test Stage"
               sh "${mvnCmd} test -Dspring.profiles.active=test"
               //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
             }
@@ -36,7 +35,7 @@ def version, mvnCmd = "mvn -s templates/cicd-settings-nexus3.xml"
              {
               script
               {
-                      sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000  -DskipTests=true"
+                      sh "mvn sonar:sonar -Dsonar.host.url=http://sonarqube:9000"
               }
             }
           }
