@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +57,7 @@ public class BookController
     private List<Author> getAuthorObjects(long[] authors)
     {
         if(authors == null)
-            return null;
+            return Collections.emptyList();
         List<Author> authorList=new ArrayList<>();
         for (int i=authors.length;i>0;i--)
         {
